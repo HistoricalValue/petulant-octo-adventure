@@ -3,5 +3,5 @@ package isi.net.http;
 import java.io.Writer;
 
 public interface RequestHandler {
-	void Handle (Writer client, Request request);
+	void Handle (Response response, Writer client, Request request);
 }
