@@ -9,7 +9,6 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Formatter;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -58,10 +57,6 @@ public class Server {
 			baouts.writeTo(outs);
 
 			outs.flush();
-			try {
-				Thread.sleep(2000);
-			} catch (InterruptedException ex) {
-			}
 		}}}}}}
 	}
 	
