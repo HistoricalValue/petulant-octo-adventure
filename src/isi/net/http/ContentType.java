@@ -1,7 +1,12 @@
 package isi.net.http;
 
 public enum ContentType {
-	Html("text/html"), Css("text/css");
+	Html("text/html"),
+	Css("text/css"),
+	
+	Png("image/png"),
+	
+	Plaintext("text/plain");
 	
 	public String GetHeaderString () {
 		return headerString;
