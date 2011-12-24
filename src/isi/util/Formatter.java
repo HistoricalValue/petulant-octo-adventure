@@ -18,7 +18,7 @@ public class Formatter implements Closeable, Flushable, AutoCloseable, Appendabl
 	///////////////////////////////////////////////////////
 	//
 	public Formatter format (final String fmt, final Object... params) {
-		f.format(fmt, params);
+		f.format(fmt, (Object) params);
 		return this;
 	}
 	
