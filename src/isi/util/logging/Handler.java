@@ -35,6 +35,7 @@ public class Handler extends java.util.logging.Handler {
 				+ "<meta http-equiv=\"Content-Script-Type\" content=\"text/javascript\" />\n"
 				+ "<meta http-equiv=\"Content-Style-Type\" content=\"text/css\" />\n"
 				+ "<link rel=\"stylesheet\" type=\"text/css\" href=\"./style.css\" />\n"
+				+ "<script type=\"text/javascript\" src=\"script.js\"></script>\n"
 		);
 	}
 	
@@ -58,8 +59,33 @@ public class Handler extends java.util.logging.Handler {
 		checkLoggingPermission();
 
 		try {
-		//	WriteJavascriptRecords();
-			w.append("</head><body>");
+			WriteJavascriptRecords();
+			final String[][] levels = new String[][] {
+				new String[] {"finest", "FINEST"},
+				new String[] {"info", "INFO"},
+				new String[] {"warning", "WARNING"}
+			};
+			WriteJsInitialiseFunction(levels);
+			
+			w.append("</head><body onload=\"Initialise()\">\n"
+					+ "\t<div id=\"controls\">\n");
+			
+			for (final String[] level: levels)
+				w.append("\t\t<div id=\"")
+						.append(level[0])
+						.append("_switch\">\n"
+						+ "\t\t\t<span class=\"switch\">\n"
+						+ "\t\t\t\t<span class=\"on\">ON&nbsp;</span>\n"
+						+ "\t\t\t</span>\n"
+						+ "\t\t\t<span class=\"control ")
+						.append(level[1])
+						.append("\">")
+						.append(level[0])
+						.append("</span>\n"
+						+ "\t\t</div>\n");
+			
+			w.append("\t</div>\n\n");
+
 			WriteHtmlRecords();
 			w.append("</body></html>").close();
 		} catch (final IOException ex) {
@@ -67,6 +93,23 @@ public class Handler extends java.util.logging.Handler {
 		}
 	}
 
+	private void WriteJsInitialiseFunction (final String[][] levels) throws IOException {
+		w.append("<script type=\"text/javascript\">\n"
+				+ "function Initialise () {\n"
+				+ "	G.ON_CLASS		= \"on\"		;\n"
+				+ "	G.ON_TEXT		= \"ON&nbsp;\"	;\n"
+				+ "	G.OFF_CLASS		= \"off\"		;\n"
+				+ "	G.OFF_TEXT		= \"OFF\"		;\n"
+				+ "	G.RecordLevel	= {}			;\n");
+				
+		for (final String[] level: levels)
+			w.append("	G.RecordLevel.").append(level[0]).append(" = \"").append(level[1]).append("\";\n")
+					.append("	G[MakeSwitchPanelId(\"").append(level[0]).append("\")] = $(MakeSwitchPanelId(\"").append(level[0]).append("\"));\n")
+					.append("	G[MakeSwitchPanelId(\"").append(level[0]).append("\")].onclick = MakeSwitcher(\"").append(level[0]).append("\");\n");
+					
+		w.append("}\n</script>\n");
+	}
+	
 	private void WriteHtmlRecords () throws IOException {
 		for (final LogRecord r: records)
 			w.append("<div class=\"record ")

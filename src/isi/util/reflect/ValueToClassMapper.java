@@ -1,7 +1,5 @@
 package isi.util.reflect;
 
-import java.util.logging.Logger;
-
 /**
  * @param <T>
  * @date 2010-06-09 23:54pm
@@ -13,6 +11,5 @@ public class ValueToClassMapper<T> implements isi.util.ValueMapper<T, Class<?>> 
     public Class<?> map(final T v) {
         return v.getClass();
     }
-    private static final Logger LOG = Logger.getLogger(ValueToClassMapper.class.getName());
 
 }
