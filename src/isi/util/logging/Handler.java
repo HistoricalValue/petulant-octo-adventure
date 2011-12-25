@@ -34,9 +34,16 @@ public class Handler extends java.util.logging.Handler {
 				+ "<meta http-equiv=\"Content-Type\" content=\"application/xhtml+xml; charset=utf-8\" />\n"
 				+ "<meta http-equiv=\"Content-Script-Type\" content=\"text/javascript\" />\n"
 				+ "<meta http-equiv=\"Content-Style-Type\" content=\"text/css\" />\n"
-				+ "<link rel=\"stylesheet\" type=\"text/css\" href=\"./style.css\" />\n"
-				+ "<script type=\"text/javascript\" src=\"script.js\"></script>\n"
-		);
+				+ "<!-- link rel=\"stylesheet\" type=\"text/css\" href=\"./style.css\" / -->\n"
+				+ "<style type=\"text/css\" media=\"screen\">\n")
+		.append(HandlerResources.GetStylesheet())
+		.append(""
+				+ "</style>\n"
+				+ "<!-- script type=\"text/javascript\" src=\"script.js\" --><!-- /script -->\n"
+				+ "<script type=\"text/javascript\">\n"
+				+ "//<![CDATA[\n")
+		.append(HandlerResources.GetScript())
+		;
 	}
 	
 	///////////////////////////////////////////////////////
@@ -60,32 +67,13 @@ public class Handler extends java.util.logging.Handler {
 
 		try {
 			WriteJavascriptRecords();
-			final String[][] levels = new String[][] {
-				new String[] {"finest", "FINEST"},
-				new String[] {"info", "INFO"},
-				new String[] {"warning", "WARNING"}
-			};
 			WriteJsInitialiseFunction(levels);
-			
-			w.append("</head><body onload=\"Initialise()\">\n"
-					+ "\t<div id=\"controls\">\n");
-			
-			for (final String[] level: levels)
-				w.append("\t\t<div id=\"")
-						.append(level[0])
-						.append("_switch\">\n"
-						+ "\t\t\t<span class=\"switch\">\n"
-						+ "\t\t\t\t<span class=\"on\">ON&nbsp;</span>\n"
-						+ "\t\t\t</span>\n"
-						+ "\t\t\t<span class=\"control ")
-						.append(level[1])
-						.append("\">")
-						.append(level[0])
-						.append("</span>\n"
-						+ "\t\t</div>\n");
-			
-			w.append("\t</div>\n\n");
-
+			w.append("\n"
+					+ "//]]>\n"
+					+ "</script>\n"
+					+ "</head>\n"
+					+ "<body onload=\"Initialise();\">\n");
+			WriteControls();
 			WriteHtmlRecords();
 			w.append("</body></html>").close();
 		} catch (final IOException ex) {
@@ -93,8 +81,27 @@ public class Handler extends java.util.logging.Handler {
 		}
 	}
 
+	private void WriteControls () throws IOException {
+		w.append("\t<div id=\"controls\">\n");
+		for (final String[] level: levels)
+			w.append("\t\t<div id=\"")
+					.append(level[0])
+					.append("_switch\">\n"
+					+ "\t\t\t<span class=\"switch\">\n"
+					+ "\t\t\t\t<span class=\"on\">ON&nbsp;</span>\n"
+					+ "\t\t\t</span>\n"
+					+ "\t\t\t<span class=\"control ")
+					.append(level[1])
+					.append("\">")
+					.append(level[0])
+					.append("</span>\n"
+					+ "\t\t</div>\n");
+
+		w.append("\t</div> <!-- controls -->\n\n");
+	}
+	
 	private void WriteJsInitialiseFunction (final String[][] levels) throws IOException {
-		w.append("<script type=\"text/javascript\">\n"
+		w.append("\n\n"
 				+ "function Initialise () {\n"
 				+ "	G.ON_CLASS		= \"on\"		;\n"
 				+ "	G.ON_TEXT		= \"ON&nbsp;\"	;\n"
@@ -107,24 +114,28 @@ public class Handler extends java.util.logging.Handler {
 					.append("	G[MakeSwitchPanelId(\"").append(level[0]).append("\")] = $(MakeSwitchPanelId(\"").append(level[0]).append("\"));\n")
 					.append("	G[MakeSwitchPanelId(\"").append(level[0]).append("\")].onclick = MakeSwitcher(\"").append(level[0]).append("\");\n");
 					
-		w.append("}\n</script>\n");
+		w.append("}\n");
 	}
 	
 	private void WriteHtmlRecords () throws IOException {
 		for (final LogRecord r: records)
-			w.append("<div class=\"record ")
-					.append(isi.util.html.Helpers.h(r.getLevel().toString()))
-					.append("\"><div class=\"date\">")
-					.append(isi.util.html.Helpers.h(new Date(r.getMillis()).toString()))
-					.append("</div>\n<div class=\"logger\">")
-					.append(isi.util.html.Helpers.h(r.getLoggerName()))
-					.append("</div><div class=\"message\">")
-					.append(isi.util.html.Helpers.h(r.getMessage()))
-					.append("</div></div> <!-- record --> \n");
+			WriteHtmlRecord(r);
+	}
+	
+	private void WriteHtmlRecord (final LogRecord r) throws IOException {
+		w.append("<div class=\"record ")
+				.append(isi.util.html.Helpers.h(r.getLevel().toString()))
+				.append("\"><div class=\"date\">")
+				.append(isi.util.html.Helpers.h(new Date(r.getMillis()).toString()))
+				.append("</div>\n<div class=\"logger\">")
+				.append(isi.util.html.Helpers.h(r.getLoggerName()))
+				.append("</div><div class=\"message\">")
+				.append(isi.util.html.Helpers.h(r.getMessage()))
+				.append("</div></div> <!-- record --> \n");
 	}
 	
 	private void WriteJavascriptRecords () throws IOException {
-		w.append("<script type=\"text/javascript\">records = [");
+		w.append("\n\nrecords = [");
 		
 		for (final LogRecord r: records) {
 			final String loggerName = r.getLoggerName();
@@ -162,7 +173,7 @@ public class Handler extends java.util.logging.Handler {
 			w.append("},");
 		}
 		
-		w.append("];</script>");
+		w.append("];");
 	}
 	
 	private static void checkLoggingPermission () {
@@ -205,4 +216,10 @@ public class Handler extends java.util.logging.Handler {
 	///////////////////////////////////////////////////////
 	// common
 	private static final Pattern DOT = Pattern.compile("\\.");
+	private static final String[][] levels =
+			new String[][] {
+				new String[] {"finest", "FINEST"},
+				new String[] {"info", "INFO"},
+				new String[] {"warning", "WARNING"}
+			};
 }
