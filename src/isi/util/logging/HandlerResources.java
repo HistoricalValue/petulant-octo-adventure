@@ -158,7 +158,16 @@ public class HandlerResources {
 				+ "}\n"
 				+ ".WARNING .message {\n"
 				+ "	color: #b0a070;\n"
-				+ "}\n";
+				+ "}\n"
+				+ ".SEVERE {\n"
+				+ "	border-color: #604040;\n"
+				+ "	background-color: #201010;\n"
+				+ "	color: #f0c0c0;\n"
+				+ "}\n"
+				+ ".SEVERE .message {\n"
+				+ "	color: #a08080;\n"
+				+ "}\n"
+				;
 	}
 
 	private HandlerResources () {

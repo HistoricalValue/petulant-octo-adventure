@@ -23,6 +23,10 @@ public class AutoLogger {
 	public void w (final Object o) {
 		logger.log(Level.WARNING, o.toString());
 	}
+	
+	public void e (final Object o) {
+		logger.log(Level.SEVERE, o.toString());
+	}
 
 	@SuppressWarnings("NonConstantLogger")
 	private final Logger logger;

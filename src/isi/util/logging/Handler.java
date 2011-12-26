@@ -34,7 +34,7 @@ public class Handler extends java.util.logging.Handler {
 				+ "<meta http-equiv=\"Content-Type\" content=\"application/xhtml+xml; charset=utf-8\" />\n"
 				+ "<meta http-equiv=\"Content-Script-Type\" content=\"text/javascript\" />\n"
 				+ "<meta http-equiv=\"Content-Style-Type\" content=\"text/css\" />\n"
-				+ "<!-- link rel=\"stylesheet\" type=\"text/css\" href=\"./style.css\" / -->\n"
+				+ "<link rel=\"stylesheet\" type=\"text/css\" href=\"./style.css\" />\n"
 				+ "<style type=\"text/css\" media=\"screen\">\n")
 		.append(HandlerResources.GetStylesheet())
 		.append(""
@@ -220,6 +220,7 @@ public class Handler extends java.util.logging.Handler {
 			new String[][] {
 				new String[] {"finest", "FINEST"},
 				new String[] {"info", "INFO"},
-				new String[] {"warning", "WARNING"}
+				new String[] {"warning", "WARNING"},
+				new String[] {"severe", "SEVERE"}
 			};
 }
