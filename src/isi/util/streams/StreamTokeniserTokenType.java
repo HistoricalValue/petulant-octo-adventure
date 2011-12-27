@@ -19,7 +19,7 @@ public enum StreamTokeniserTokenType {
 		this.val = val;
 	}
 
-	private int GetVal() {
+	public int GetVal() {
 		return val;
 	}
 

@@ -62,7 +62,7 @@ public class Server {
 	
 	///////////////////////////////////////////////////////
 	// private
-	private void NotifyHandlers (final Response res, final Writer w, final Request req) {
+	private void NotifyHandlers (final Response res, final Writer w, final Request req) throws IOException {
 		for (final RequestHandler h : handlers)
 			h.Handle(res, w, req);
 	}

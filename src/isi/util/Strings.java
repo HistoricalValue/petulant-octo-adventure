@@ -3,7 +3,7 @@ package isi.util;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
-import java.nio.CharBuffer;
+import java.util.Iterator;
 
 /**
  *
@@ -33,5 +33,23 @@ public class Strings {
 		bob.append(";");
 		
 		return bob.toString();
+	}
+	
+	public static <T> String Join (final Iterable<? extends T> iterable, final String joint) {
+		final Iterator<? extends T> ite = iterable.iterator();
+		
+		if (!ite.hasNext())
+			return "";
+		
+		{
+			final StringBuilder bob = new StringBuilder(1 << 14);
+			
+			bob.append(ite.next().toString());
+			
+			while (ite.hasNext())
+				bob.append(joint).append(ite.next().toString());
+			
+			return bob.toString();
+		}
 	}
 }
