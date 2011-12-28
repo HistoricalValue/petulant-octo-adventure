@@ -1,10 +1,7 @@
 package isi.net.http;
 
 import isi.net.http.helpers.ResponseRequestFields;
-import isi.util.Strings;
 import java.nio.charset.Charset;
-import java.util.List;
-import java.util.Map;
 
 public class Request {
 	
@@ -45,10 +42,8 @@ public class Request {
 	@Override
 	public String toString () {
 		final StringBuilder bob = new StringBuilder(1 << 14);
-		bob.append(method).append(" ").append(path).append(" ").append(version).append("\n");
-		
-		for (final Map.Entry<String, List<String>> field: fields)
-			bob.append(field.getKey()).append(": ").append(Strings.Join(field.getValue(), "; ")).append("\n");
+		bob.append(method).append(" ").append(path).append(" ").append(version).append("\n")
+				.append(fields).append("\n");
 		
 		return bob.toString();
 	}

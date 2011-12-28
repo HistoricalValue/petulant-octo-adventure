@@ -49,10 +49,9 @@ public class RequestParser {
 				final String line = requestTokeniser.sval;
 				final String[] tokens = line.split(":\\s*");
 				final String name = tokens[0];
-				final String valuesStr = tokens[1];
-				final String[] values = valuesStr.split(";\\s*");
+				final String value = tokens[1];
 				
-				request.GetFields().AddField(name, values);
+				request.GetFields().AddField(name, value);
 				
 				ReadEOL();
 			}

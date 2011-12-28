@@ -11,9 +11,13 @@ import java.util.Iterator;
  */
 public class Strings {
 	
+	///////////////////////////////////////////////////////
+	// constructor
 	private Strings () {
 	}
 	
+	///////////////////////////////////////////////////////
+	//
 	public static String Escape (final String str) {
 		return str.replace("\"", "\\\"").replace("\n", "\\\n");
 	}
@@ -21,6 +25,8 @@ public class Strings {
 		return Escape(o.toString());
 	}
 	
+	///////////////////////////////////////////////////////
+	//
 	public static String ToJavaLiteral (final Reader r) throws IOException {
 		final StringBuilder bob = new StringBuilder(1 << 14);
 		final BufferedReader br = new BufferedReader(r);
@@ -35,6 +41,8 @@ public class Strings {
 		return bob.toString();
 	}
 	
+	///////////////////////////////////////////////////////
+	//
 	public static <T> String Join (final Iterable<? extends T> iterable, final String joint) {
 		final Iterator<? extends T> ite = iterable.iterator();
 		
@@ -51,5 +59,9 @@ public class Strings {
 			
 			return bob.toString();
 		}
+	}
+	
+	public static <T> String Join (final T[] array, final String joint) {
+		return Join(java.util.Arrays.asList(array), joint);
 	}
 }

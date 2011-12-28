@@ -28,12 +28,12 @@ public class Response {
 	}
 	
 	public Response SetContentLength (final int length) {
-		fields.SetValues("Content-length", Integer.toString(length));
+		fields.SetValue("Content-length", Integer.toString(length));
 		return this;
 	}
 	
 	public Response SetContentType (final ContentType type) {
-		fields.SetValues("Content-type", type.GetHeaderString(), "charset=utf8");
+		fields.SetValue("Content-type", type.GetHeaderString(), "charset=utf8");
 		return this;
 	}
 	
@@ -44,6 +44,7 @@ public class Response {
 				.append(" ")
 				.append(status.toString())
 				.append("\r\n");
-		return fields.WriteTo(w).append("\r\n");
+		fields.WriteTo(w, "\r\n").append("\r\n");
+		return w;
 	}
 }
