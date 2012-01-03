@@ -80,6 +80,8 @@ public class Handler extends java.util.logging.Handler {
 			ok.SpoilOk(ex);
 		}
 	}
+	
+	///////////////////////////////////////////////////////
 
 	private void WriteControls () throws IOException {
 		w.append("\t<div id=\"controls\">\n");

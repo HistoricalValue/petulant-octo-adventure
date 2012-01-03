@@ -17,7 +17,7 @@ public class MultiplierOutputStream extends OutputStream {
         outs = new LinkedList<>(_outs);
     }
 
-    public MultiplierOutputStream(final OutputStream[] _outs) {
+    public MultiplierOutputStream(final OutputStream... _outs) {
         outs = java.util.Arrays.asList(_outs);
     }
 
