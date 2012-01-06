@@ -1,12 +1,25 @@
 package isi.util;
 
+import isi.util.streams.StreamTokeniserTokenType;
+import java.io.IOError;
+import java.io.IOException;
 import java.io.StreamTokenizer;
+import java.io.StringReader;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  *
  * @author Amalia
  */
 public class StreamTokenisers {
+	
+	///////////////////////////////////////////////////////
+	//
+	public static StreamTokenizer New (final String s) {
+		return new StreamTokenizer(new StringReader(s));
+	}
 	
 	///////////////////////////////////////////////////////
 	// Usual character groups
@@ -127,6 +140,75 @@ public class StreamTokenisers {
 		SetStreamTokeniserWhitespaceAsWord(t);
 		SetStreamTokeniserEOLChars(t);
 		t.eolIsSignificant(true);
+	}
+	
+	
+	///////////////////////////////////////////////////////
+	//
+	
+	public static String GetLine (final StreamTokenizer t) throws IOException {
+		SetStreamTokeniserLineMode(t);
+		final StreamTokeniserTokenType tt = StreamTokeniserTokenType.valueOf(t.nextToken());
+		assert tt == StreamTokeniserTokenType.WORD;
+		return t.sval;
+	}
+	
+	public static List<String> ReadAllWordTokens (final StreamTokenizer t) throws IOException {
+		final List<String> result = new LinkedList<>();		
+		for (StreamTokeniserTokenType tt = StreamTokeniserTokenType.valueOf(t.nextToken()); tt == StreamTokeniserTokenType.WORD; tt = StreamTokeniserTokenType.valueOf(t.nextToken()))
+			result.add(t.sval);
+
+		return result;
+	}
+	
+	public static List<String> ReadAllWordTokensToTheEnd (final StreamTokenizer t) throws IOException {
+		SetStreamTokeniserWordMode(t);
+		final List<String> result = ReadAllWordTokens(t);
+		final StreamTokeniserTokenType tt = StreamTokeniserTokenType.valueOf(t.nextToken());
+		assert tt == StreamTokeniserTokenType.EOF;
+		return result;
+	}
+	
+	///////////////////////////////////////////////////////
+	//
+	
+	public static Iterable<StreamTokeniserTokenType> ToIterable (final StreamTokenizer t) {
+		return new Iterable<StreamTokeniserTokenType>() {
+			@Override
+			public Iterator<StreamTokeniserTokenType> iterator () {
+				return new Iterator<StreamTokeniserTokenType>() {
+					private StreamTokeniserTokenType buffer;
+					
+					private void FillBuffer () {
+						if (buffer == null)
+							try {
+								buffer = StreamTokeniserTokenType.valueOf(t.nextToken());
+							} catch (final IOException ex) {
+								throw new RuntimeException(ex);
+							}	
+					}
+					
+					@Override
+					public boolean hasNext () {
+						FillBuffer();
+						return buffer != StreamTokeniserTokenType.EOF;
+					}
+
+					@Override
+					public StreamTokeniserTokenType next () {
+						FillBuffer();
+						final StreamTokeniserTokenType result = buffer;
+						buffer = null;
+						return result;
+					}
+
+					@Override
+					public void remove () {
+						throw new UnsupportedOperationException("Not supported (ever).");
+					}
+				};
+			}
+		};
 	}
 	
 	///////////////////////////////////////////////////////

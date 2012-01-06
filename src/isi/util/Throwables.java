@@ -14,8 +14,7 @@ public class Throwables {
 	
 	public static String toString (final Throwable t) {
 		final CharArrayWriter caw = new CharArrayWriter(1 << 14);
-		caw.append(t.toString()).append("\n");
-		
+
 		final PrintWriter w = new PrintWriter(caw);
 		t.printStackTrace(w);
 		

@@ -1,5 +1,6 @@
 package isi.util.logging;
 
+import isi.util.Throwables;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -26,6 +27,9 @@ public class AutoLogger {
 	
 	public void e (final Object o) {
 		logger.log(Level.SEVERE, o.toString());
+	}
+	public void e (final Throwable t) {
+		e(Throwables.toString(t));
 	}
 
 	@SuppressWarnings("NonConstantLogger")

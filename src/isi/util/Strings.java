@@ -19,7 +19,7 @@ public class Strings {
 	///////////////////////////////////////////////////////
 	//
 	public static String Escape (final String str) {
-		return str.replace("\"", "\\\"").replace("\n", "\\\n");
+		return str.replace("\"", "\\\"").replace("\r", "").replace("\n", "\\\n");
 	}
 	public static String Escape (final Object o) {
 		return Escape(o.toString());
