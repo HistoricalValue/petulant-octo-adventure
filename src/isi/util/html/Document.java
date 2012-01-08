@@ -9,19 +9,20 @@ public class Document implements Readable {
 	
 	private static final String
 			Doctype =
-			"<!DOCTYPE html PUBLIC\"-//W3C//DTD XHTML 1.0 Transitional//EN\" \n"
+			"<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \n"
 			+ "		\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n";
 	
 	///////////////////////////////////////////////////////
 	// state
-	private final Element html, head, body, style;
+	private final Element html, head, body, style, title;
 	
-	public Document () {
+	public Document (final String title) {
 		final ElementBuilder b = new ElementBuilder();
+		this.title = b.title(title);
 		style = b.link()
 				.attr("rel", "stylesheet")
 				.attr("type", "text/css");
-		head = b.head(style);
+		head = b.head(this.title, style);
 		body = b.body();
 		html = b.html(head, body)
 				.attr("xmlns", "http://www.w3.org/1999/xhtml")

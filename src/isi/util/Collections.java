@@ -61,6 +61,10 @@ public class Collections {
 		return unmodifiableList(l, l.size());
 	}
 	
+	public static <T> List<T> unmodifiableList (final Collection<T> col) {
+		return unmodifiableList(col, col.size());
+	}
+	
 	///////////////////////////////////////////////////////
 	private static <F, T> Collection<? super T> map (final Iterable<? extends F> l, final Collection<? super T> into, final ValueMapper<? super F, ? extends T> m) {
 		for (final F unmapped: l)
