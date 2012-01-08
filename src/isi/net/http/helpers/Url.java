@@ -18,7 +18,7 @@ public class Url {
 
 			buf.put((byte) b);
 		}
-
+		
 		buf.flip();
 		if (buf.hasArray())
 			return new String(buf.array(), 0, buf.limit(), charset);
@@ -46,6 +46,10 @@ public class Url {
 			}
 		
 		return bob.toString();
+	}
+	
+	public static String EscapeUrl (final String url) {
+		return url.replaceAll("%", "%25");
 	}
 	
 	///////////////////////////////////////////////////////

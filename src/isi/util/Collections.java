@@ -50,19 +50,19 @@ public class Collections {
 	}
 	
 	///////////////////////////////////////////////////////
-	public static <T> List<T> unmodifiableList (final Iterable<? extends T> i, final int length) {
+	public static <T> List<T> newUnmodifiableList (final Iterable<? extends T> i, final int length) {
 		return java.util.Collections.unmodifiableList(newArrayList(i, length));
 	}
 	
-	public static <T> List<T> unmodifiableList (final Iterable<? extends T> i) {
+	public static <T> List<T> newUnmodifiableList (final Iterable<? extends T> i) {
 		final List<T> l = new LinkedList<>();
 		for (final T o: i)
 			l.add(o);
-		return unmodifiableList(l, l.size());
+		return newUnmodifiableList(l, l.size());
 	}
 	
-	public static <T> List<T> unmodifiableList (final Collection<T> col) {
-		return unmodifiableList(col, col.size());
+	public static <T> List<T> newUnmodifiableList (final Collection<T> col) {
+		return newUnmodifiableList(col, col.size());
 	}
 	
 	///////////////////////////////////////////////////////

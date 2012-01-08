@@ -31,12 +31,11 @@ public class ElementBuilder {
 		return MakeElement("p", subelements);
 	}
 	
-	public Element li (final String text) {
-		return MakeElement("li", text(text));
-	}
-	
 	public Element li (final Element... kids) {
 		return MakeElement("li", kids);
+	}
+	public Element li (final String text) {
+		return li(text(text));
 	}
 	
 	private Element xl (final String name, final String... lis) {
@@ -112,6 +111,13 @@ public class ElementBuilder {
 		return td(text(text));
 	}
 	
+	public Element th (final Element... kids) {
+		return MakeElement("th", kids);
+	}
+	public Element th (final String text) {
+		return th(text(text));
+	}
+	
 	public Element table (final Element... kids) {
 		return MakeElement("table", kids);
 	}
@@ -138,5 +144,21 @@ public class ElementBuilder {
 	
 	public Element dd (final String text) {
 		return dd(text(text));
+	}
+	
+	///////////////////////////////////////////////////////
+	//
+	
+	private Element xl (final String name, final Iterable<? extends String> texts) {
+		Element xl = MakeElement(name);
+		
+		for (final String text: texts)
+			xl.AddSubelement(li(text));
+		
+		return xl;
+	}
+	
+	public Element ol (final Iterable<? extends String> texts) {
+		return xl("ol", texts);
 	}
 }
