@@ -1,5 +1,6 @@
 package isi.net.http.helpers;
 
+import isi.net.http.Request;
 import isi.util.Ref;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
@@ -49,7 +50,10 @@ public class Url {
 	}
 	
 	public static String EscapeUrl (final String url) {
-		return url.replaceAll("%", "%25");
+		final StringBuilder bob = new StringBuilder(1 << 14);
+		for (final byte b: url.getBytes(Request.CHARSET))
+			bob.append("%").append(Integer.toHexString((int) b));
+		return bob.toString();
 	}
 	
 	///////////////////////////////////////////////////////
