@@ -1,5 +1,6 @@
 package isi.util;
 
+import java.io.CharArrayWriter;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
@@ -26,6 +27,15 @@ public class Charstreams {
 			buf.flip();
 			appendable.append(buf);
 		}
+	}
+	
+	public static char[] readAll (final Reader r) throws IOException {
+		final CharArrayWriter w = new CharArrayWriter(1 << 19);
+		
+		transfuse(r, w);
+		w.flush();
+		
+		return w.toCharArray();
 	}
 	
 }
