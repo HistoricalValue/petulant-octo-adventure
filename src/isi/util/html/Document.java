@@ -14,7 +14,7 @@ public class Document implements Readable {
 	
 	///////////////////////////////////////////////////////
 	// state
-	private final Element html, head, body, style, title;
+	private final Element html, head, body, style, script, title;
 	
 	public Document (final String title) {
 		final ElementBuilder b = new ElementBuilder();
@@ -22,12 +22,20 @@ public class Document implements Readable {
 		style = b.link()
 				.attr("rel", "stylesheet")
 				.attr("type", "text/css");
-		head = b.head(this.title, style);
+		script = b.script()
+				.attr("type", "text/javascript");
+		head = b.head(this.title, script, style);
 		body = b.body();
 		html = b.html(head, body)
 				.attr("xmlns", "http://www.w3.org/1999/xhtml")
 				.attr("xml:lang", "en")
 				.attr("lang", "en");
+	}
+	
+	///////////////////////////////////////////////////////
+	//
+	public Element Body () {
+		return body;
 	}
 	
 	///////////////////////////////////////////////////////
@@ -53,6 +61,10 @@ public class Document implements Readable {
 		assert html.GetChild("head").GetChild("link", "rel=stylesheet") == style;
 		style.attr("href", stylesheet);
 	}
+	public void SetJavascript (final String javascript) {
+		assert html.GetChild("head").GetChild("script") == script;
+		script.attr("src", javascript);
+	}
 	
 	public void AddElement (final Element element) {
 		body.AddSubelement(element);
@@ -61,6 +73,19 @@ public class Document implements Readable {
 	public void AddElements (final Element... elements) {
 		for (final Element element: elements)
 			AddElement(element);
+	}
+	
+	///////////////////////////////////////////////////////
+	// utils
+	public static Document FromString (final String text) {
+		final Document doc = new Document("Quicktext");
+		final Element pre = new Element("pre");
+		final Element textEl = new TextElement(text);
+		
+		doc.AddElement(pre);
+		pre.AddSubelement(textEl);
+		
+		return doc;
 	}
 	
 }

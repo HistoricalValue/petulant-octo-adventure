@@ -84,6 +84,10 @@ public class ElementBuilder {
 		return MakeElement("link");
 	}
 	
+	public Element script () {
+		return MakeElement("script", text(""));
+	}
+	
 	public Element body (final Element... kids) {
 		return MakeElement("body", kids);
 	}

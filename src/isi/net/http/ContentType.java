@@ -3,6 +3,7 @@ package isi.net.http;
 public enum ContentType {
 	Html("text/html"),
 	Css("text/css"),
+	Javascript("text/javascript"),
 	
 	Png("image/png"),
 	
