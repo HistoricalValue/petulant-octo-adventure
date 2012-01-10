@@ -88,8 +88,12 @@ public class ElementBuilder {
 		return MakeElement("body", kids);
 	}
 	
+	public Element a (final String href, final String text) {
+		return MakeElement("a", text(text)).attr("href", href);
+	}
+	
 	public Element a (final String text) {
-		return MakeElement("a", text(text)).attr("href", text);
+		return a(text, text);
 	}
 	
 	public Element h1 (final Element... kids) {
@@ -144,6 +148,14 @@ public class ElementBuilder {
 	
 	public Element dd (final String text) {
 		return dd(text(text));
+	}
+	
+	public Element div (final Element... kids) {
+		return MakeElement("div", kids);
+	}
+	
+	public Element div (final String text) {
+		return div(text(text));
 	}
 	
 	///////////////////////////////////////////////////////

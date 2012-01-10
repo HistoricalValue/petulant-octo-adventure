@@ -1,5 +1,9 @@
 package isi.util.html;
 
+import java.util.Deque;
+import isi.util.Collections;
+import isi.util.Iterators;
+import isi.util.Strings;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,11 +13,14 @@ import static isi.util.html.Helpers.h;
 
 public class Element {
 	
+	public final static String	ATTR_CLASS	= "class",
+								ATTR_ID		= "id";
+	
 	///////////////////////////////////////////////////////
 	// state
 	private final String name;
 	private final List<Element> subelements = new ArrayList<>(20);
-	private final Map<String, String> attributes = new HashMap<>(5);
+	private final Map<String, Deque<String>> attributes = new HashMap<>(5);
 	
 	///////////////////////////////////////////////////////
 	// constructors
@@ -53,7 +60,7 @@ public class Element {
 					final String[] pair = wanted.split("\\=", 2);
 					assert pair.length == 2;
 					
-					final String having = child.GetAttribute(pair[0]);
+					final String having = child.GetAttributeValue(pair[0]);
 					matches = having != null && having.equals(pair[1]);
 				}
 				if (matches)
@@ -64,24 +71,59 @@ public class Element {
 	
 	///////////////////////////////////////////////////////
 	//
-	public Element attr (final String name, final String value) {
-		final Object previous = attributes.put(name, value);
+	public Element attr (final String name, final Iterable<? extends String> values) {
+		final Object previous = attributes.put(name, Collections.newUnmodifiableDeque(values));
 		if (previous != null)
 			throw new RuntimeException(name);
 		return this;
 	}
 	
-	public String GetAttribute (final String name) {
+	public Element attr (final String name, final String value) {
+		return attr(name, Iterators.SingleItem(value));
+	}
+	
+	public Deque<String> GetAttribute (final String name) {
 		return attributes.get(name);
+	}
+	
+	public String GetAttributeValue (final String name) {
+		final Deque<String> values = GetAttribute(name);
+		return values == null? null : values.peekFirst();
+	}
+	
+	///////////////////////////////////////////////////////
+	//
+	public Element SetClass (final Iterable<? extends String> classes) {
+		return attr(ATTR_CLASS, classes);
+	}
+	
+	public Element SetClass (final String klass) {
+		return attr(ATTR_CLASS, klass);
+	}
+	
+	public String GetClass () {
+		return GetAttributeValue(ATTR_CLASS);
+	}
+	
+	public Deque<String> GetClasses () {
+		return GetAttribute(ATTR_CLASS);
+	}
+	
+	public Element SetId (final String id) {
+		return attr(ATTR_ID, id);
+	}
+	
+	public String GetId () {
+		return GetAttributeValue(ATTR_ID);
 	}
 	
 	///////////////////////////////////////////////////////
 	//
 	public void WriteTo (final Appendable appendable) throws IOException {
 		appendable.append('<').append(name);
-		for (final Map.Entry<String, String> attr: attributes.entrySet())
+		for (final Map.Entry<String, Deque<String>> attr: attributes.entrySet())
 			appendable.append(' ').append(attr.getKey()).append('=').append('"')
-					.append(h(attr.getValue())).append('"');
+					.append(h(Strings.Join(attr.getValue(), " "))).append('"');
 		
 		if (subelements.isEmpty())
 			appendable.append("/>");
