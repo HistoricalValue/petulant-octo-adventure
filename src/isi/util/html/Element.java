@@ -6,12 +6,17 @@ import isi.util.Iterators;
 import isi.util.Strings;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import static isi.util.html.Helpers.h;
 
 public class Element {
+	
+	@SuppressWarnings("PublicInnerClass")
+	public enum EmptinessPolicy { Must, Mustnt, May };
 	
 	public final static String	ATTR_CLASS	= "class",
 								ATTR_ID		= "id";
@@ -21,17 +26,21 @@ public class Element {
 	private final String name;
 	private final List<Element> subelements = new ArrayList<>(20);
 	private final Map<String, Deque<String>> attributes = new HashMap<>(5);
+	private final EmptinessPolicy emptiness;
 	
 	///////////////////////////////////////////////////////
 	// constructors
-	public Element (final String name) {
+	public Element (final String name, final EmptinessPolicy emptiness) {
 		this.name = name;
+		this.emptiness = emptiness;
 	}
 
 	///////////////////////////////////////////////////////
 	//
 	public void AddSubelement (final Element subelement) {
-		subelements.add(subelement);
+		if (emptiness == EmptinessPolicy.Must)
+			throw new RuntimeException("must be empty");
+		subelements.add(Objects.requireNonNull(subelement));
 	}
 	
 	public void AddSubelements (final Iterable<? extends Element> subelements) {
@@ -97,6 +106,10 @@ public class Element {
 		return attr(ATTR_CLASS, classes);
 	}
 	
+	public Element SetClass (final String... classes) {
+		return SetClass(Arrays.asList(classes));
+	}
+	
 	public Element SetClass (final String klass) {
 		return attr(ATTR_CLASS, klass);
 	}
@@ -125,7 +138,7 @@ public class Element {
 			appendable.append(' ').append(attr.getKey()).append('=').append('"')
 					.append(h(Strings.Join(attr.getValue(), " "))).append('"');
 		
-		if (subelements.isEmpty())
+		if (subelements.isEmpty() && emptiness == EmptinessPolicy.May)
 			appendable.append("/>");
 		else {
 			appendable.append('>');

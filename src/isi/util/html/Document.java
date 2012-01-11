@@ -66,26 +66,21 @@ public class Document implements Readable {
 		script.attr("src", javascript);
 	}
 	
-	public void AddElement (final Element element) {
+	public Document AddElement (final Element element) {
 		body.AddSubelement(element);
+		return this;
 	}
 	
-	public void AddElements (final Element... elements) {
+	public Document AddElements (final Element... elements) {
 		for (final Element element: elements)
 			AddElement(element);
+		return this;
 	}
 	
 	///////////////////////////////////////////////////////
 	// utils
 	public static Document FromString (final String text) {
-		final Document doc = new Document("Quicktext");
-		final Element pre = new Element("pre");
-		final Element textEl = new TextElement(text);
-		
-		doc.AddElement(pre);
-		pre.AddSubelement(textEl);
-		
-		return doc;
+		return new Document("Quicktext").AddElement(new ElementBuilder().pre(text));
 	}
 	
 }
