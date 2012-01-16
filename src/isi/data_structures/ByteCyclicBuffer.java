@@ -19,6 +19,22 @@ public class ByteCyclicBuffer implements Cloneable, ByteBuffer  {
     private int snap_read_index, snap_store_index, snap_free_space;
     private boolean snap_store_index_wrapped, snapshot_available;
 
+	@Override
+	public java.nio.ByteBuffer ToByteBuffer () {
+		assert p_invariablesHold();
+		
+		final java.nio.ByteBuffer buf = java.nio.ByteBuffer.allocate(available());
+		
+		if (isStore_index_wrapped()) {
+			buf.put(buffer, getRead_index(), buffer.length - getRead_index());
+			buf.put(buffer, 0, getStore_index());
+		}
+		else
+			buf.put(buffer, getRead_index(), getStore_index() - getRead_index());
+		
+		return buf;
+	}
+	
     @Override
     public ByteCyclicBuffer appendva (final byte... block) throws StorageException {
         return append(block);

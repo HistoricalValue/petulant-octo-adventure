@@ -34,12 +34,6 @@ public class Document implements Readable {
 	
 	///////////////////////////////////////////////////////
 	//
-	public Element Body () {
-		return body;
-	}
-	
-	///////////////////////////////////////////////////////
-	//
 	public void WriteTo (final Appendable w) throws IOException {
 		w.append(Doctype);
 		html.WriteTo(w);

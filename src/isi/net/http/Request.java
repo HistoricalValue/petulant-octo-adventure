@@ -7,7 +7,7 @@ public class Request {
 	
 	///////////////////////////////////////////////////////
 	
-	public static final Charset CHARSET = Charset.forName("UTF-8");
+	public static final Charset CHARSET = Charset.forName("iso8859-1");
 		
 	///////////////////////////////////////////////////////
 	// state

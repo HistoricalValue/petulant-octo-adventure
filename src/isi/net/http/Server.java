@@ -1,5 +1,6 @@
 package isi.net.http;
 
+import static isi.util.logging.Loggers.L;
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -41,16 +42,17 @@ public class Server {
 		try (final OutputStreamWriter outsw = new OutputStreamWriter(outs, Request.CHARSET)) {
 		try (final BufferedWriter boutsw = new BufferedWriter(outsw)) {
 		try (final ByteArrayOutputStream baouts = new ByteArrayOutputStream(1 << 19)) {
+			final Request request = new RequestParser(ins).Parse();
 			final Response response = new Response();
 
 			try (final OutputStreamWriter baoutsw = new OutputStreamWriter(baouts, Request.CHARSET)) {
 			try (final BufferedWriter bob = new BufferedWriter(baoutsw)) {
-				NotifyHandlers(response, bob, new RequestParser(ins).Parse());
+				NotifyHandlers(response, bob, request);
 			}}
 
 			response.SetContentLength(baouts.size());
 			response.WriteTo(boutsw);
-			
+
 			boutsw.flush();
 			outsw.flush();
 
@@ -58,6 +60,9 @@ public class Server {
 
 			outs.flush();
 		}}}}}}
+		catch (final IOException ioex) {
+			L().e(ioex);
+		}
 	}
 	
 	///////////////////////////////////////////////////////

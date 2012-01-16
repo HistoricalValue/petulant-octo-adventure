@@ -3,6 +3,8 @@ package isi.net.http;
 import isi.net.http.helpers.ResponseRequestFields;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Response {
 	
@@ -33,7 +35,13 @@ public class Response {
 	}
 	
 	public Response SetContentType (final ContentType type) {
-		fields.SetValue("Content-type", type.GetHeaderString(), "charset=utf8");
+		final List<String> values = new ArrayList<>(2);
+		values.add(type.GetHeaderString());
+		
+		if (type.IsText())
+			values.add("charset=utf8");
+		
+		fields.SetValue("Content-type", values);
 		return this;
 	}
 	

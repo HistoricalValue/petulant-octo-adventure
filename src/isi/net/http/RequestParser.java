@@ -1,11 +1,10 @@
 package isi.net.http;
 
 import isi.util.meta.Builder02;
+import isi.util.streams.Iso8859_1InputStreamReader;
 import isi.util.streams.StreamTokeniserTokenType;
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.StreamTokenizer;
 import java.lang.reflect.InvocationTargetException;
 import static isi.net.http.helpers.Url.ParseUrl;
@@ -21,7 +20,7 @@ public class RequestParser {
 	///////////////////////////////////////////////////////
 	// construction
 	public RequestParser (final InputStream ins) {
-		requestTokeniser = new StreamTokenizer(new BufferedReader(new InputStreamReader(ins, Request.CHARSET)));
+		requestTokeniser = new StreamTokenizer(new Iso8859_1InputStreamReader(ins));
 		requestTokeniser.resetSyntax();
 	}
 	
@@ -33,7 +32,7 @@ public class RequestParser {
 		SetStreamTokeniserWordMode(requestTokeniser);
 		
 		builder.Set00(Method.valueOf(ReadString()));
-		builder.Set01(ParseUrl(ReadString(), Request.CHARSET));
+		builder.Set01(ParseUrl(ReadString()));
 		builder.Set02(ReadString());
 		ReadEOL();
 		

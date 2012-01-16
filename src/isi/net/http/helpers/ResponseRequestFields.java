@@ -2,7 +2,7 @@ package isi.net.http.helpers;
 
 import isi.util.Strings;
 import java.io.IOException;
-import java.io.Writer;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -28,6 +28,10 @@ public class ResponseRequestFields implements Iterable<Map.Entry<String, String>
 		return fields.containsKey(field);
 	}
 	
+	public String GetField (final String field) {
+		return fields.get(field);
+	}
+	
 	public ResponseRequestFields SetValue (final String field, final String value) {
 		if (value.isEmpty())
 			throw new IllegalArgumentException("isEmpty()");
@@ -37,6 +41,9 @@ public class ResponseRequestFields implements Iterable<Map.Entry<String, String>
 		return this;
 	}
 	public ResponseRequestFields SetValue (final String field, final String... values) {
+		return SetValue(field, Arrays.asList(values));
+	}
+	public ResponseRequestFields SetValue (final String field, final Iterable<? extends String> values) {
 		return SetValue(field, Strings.Join(values, "; "));
 	}
 	
