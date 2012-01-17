@@ -46,6 +46,10 @@ public class ElementBuilder {
 		return li(text(text));
 	}
 	
+	private Element xl (final String name) {
+		return MakeElement(name, Mustnt);
+	}
+	
 	private Element xl (final String name, final String... lis) {
 		final Element[] subelements = new Element[lis.length];
 		for (int i = 0; i < lis.length; ++i)
@@ -60,7 +64,7 @@ public class ElementBuilder {
 		return MakeElement(name, Mustnt, subelements);
 	}
 	
-	public Element ul_lis (final String... lis) {
+	public Element ul (final String... lis) {
 		return xl("ul", lis);
 	}
 	
@@ -68,8 +72,16 @@ public class ElementBuilder {
 		return xl("ul", kids);
 	}
 	
-	public Element ol_lis (final String... lis) {
+	public Element ul () {
+		return xl("ul");
+	}
+	
+	public Element ol (final String... lis) {
 		return xl("ol", lis);
+	}
+	
+	public Element ol () {
+		return xl("ol");
 	}
 	
 	public Element ol (final Element... kids) {
