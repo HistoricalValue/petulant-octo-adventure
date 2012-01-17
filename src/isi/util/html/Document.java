@@ -71,6 +71,11 @@ public class Document implements Readable {
 		return this;
 	}
 	
+	public Document SetBodyId (final String id) {
+		body.SetId(id);
+		return this;
+	}
+
 	///////////////////////////////////////////////////////
 	// utils
 	public static Document FromString (final String text) {

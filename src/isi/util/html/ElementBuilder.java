@@ -28,7 +28,11 @@ public class ElementBuilder {
 	//
 
 	public Element text (final String text) {
-		return new TextElement(text);
+		return new TextElement(text, false);
+	}
+	
+	public Element html (final String html) {
+		return new TextElement(html, true);
 	}
 	
 	public Element p (final Element... subelements) {
