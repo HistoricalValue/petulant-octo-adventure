@@ -61,7 +61,7 @@ public class Loggers {
 	public static void Initialise () throws SecurityException, IOException {
 		LogManager.getLogManager().readConfiguration(new ByteArrayInputStream(".handlers =\n.level = FINEST\n".getBytes(Encodings.UTF8)));
 		
-		final Path outpath = Runtime.GetRuntime().GetCwd().resolve("out.html");
+		final Path outpath = Runtime.GetCurrentCwd().resolve("out.html");
 		Files.deleteIfExists(outpath);
 		handler = new Handler(Files.newBufferedWriter(outpath, Encodings.UTF8));
 	}

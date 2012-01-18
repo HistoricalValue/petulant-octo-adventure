@@ -28,6 +28,15 @@ public class Encodings {
 			throw new RuntimeException(flushingResult.toString());
 	}
 	
+	private final static CharBuffer cbuf1 = CharBuffer.allocate(1);
+	public static void FullEncode1 (final CharsetEncoder enc, final char in, final ByteBuffer out) {
+		cbuf1.clear();
+		cbuf1.put(in);
+		cbuf1.flip();
+		assert cbuf1.remaining() == 1;
+		FullEncode(enc, cbuf1, out);
+	}
+	
 	public static void FullDecode (final CharsetDecoder dec, final ByteBuffer in, final CharBuffer out) {
 		dec.reset();
 		

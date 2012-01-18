@@ -1,13 +1,14 @@
 package isi.net.http;
 
 import isi.net.http.helpers.ResponseRequestFields;
+import isi.util.charstreams.Encodings;
 import java.nio.charset.Charset;
 
 public class Request {
 	
 	///////////////////////////////////////////////////////
 	
-	public static final Charset CHARSET = Charset.forName("iso8859-1");
+	public static final Charset Encoding = Encodings.UTF8;
 		
 	///////////////////////////////////////////////////////
 	// state

@@ -5,6 +5,7 @@ import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
@@ -37,15 +38,20 @@ public class Server {
 	// 
 	public void Serve () throws IOException {
 		try (final Socket client = sock.accept()) {
+		//
 		try (final InputStream ins = client.getInputStream()) {
 		try (final OutputStream outs = client.getOutputStream()) {
-		try (final OutputStreamWriter outsw = new OutputStreamWriter(outs, Request.CHARSET)) {
+		//
+		try (final InputStreamReader insr = new InputStreamReader(ins, Request.Encoding)) {
+		try (final OutputStreamWriter outsw = new OutputStreamWriter(outs, Request.Encoding)) {
 		try (final BufferedWriter boutsw = new BufferedWriter(outsw)) {
+		//
 		try (final ByteArrayOutputStream baouts = new ByteArrayOutputStream(1 << 19)) {
-			final Request request = new RequestParser(ins).Parse();
+		//
+			final Request request = new RequestParser(insr).Parse();
 			final Response response = new Response();
 
-			try (final OutputStreamWriter baoutsw = new OutputStreamWriter(baouts, Request.CHARSET)) {
+			try (final OutputStreamWriter baoutsw = new OutputStreamWriter(baouts, Request.Encoding)) {
 			try (final BufferedWriter bob = new BufferedWriter(baoutsw)) {
 				NotifyHandlers(response, bob, request);
 			}}
@@ -59,7 +65,7 @@ public class Server {
 			baouts.writeTo(outs);
 
 			outs.flush();
-		}}}}}}
+		}}}}}}}
 		catch (final IOException ioex) {
 			L().e(ioex);
 		}

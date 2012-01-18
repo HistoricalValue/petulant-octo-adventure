@@ -1,31 +1,38 @@
 package isi.net.http.helpers;
 
+import isi.net.http.Request;
 import isi.util.Ref;
 import isi.util.charstreams.Encodings;
 import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
+import java.nio.charset.CharacterCodingException;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CharsetEncoder;
+import java.nio.charset.CodingErrorAction;
 
 public class Url {
 	
 	///////////////////////////////////////////////////////
 	//
-	public static final Charset UrlEncoding = Encodings.UTF8;
-	
+	public static final Charset UrlEncoding = Request.Encoding;
+
 	///////////////////////////////////////////////////////
 	// utils
-	private static final CharBuffer cbuf1 = CharBuffer.allocate(1);
 	private static final ByteBuffer bbuf1 = ByteBuffer.allocate(1);
 	//
-	private static final CharsetEncoder enc = Encodings.ISO8859_1.newEncoder();
-	private static final CharsetDecoder dec = Encodings.ISO8859_1.newDecoder();
+	private static final CharsetEncoder enc = UrlEncoding.newEncoder();
+	private static final CharsetDecoder dec = UrlEncoding.newDecoder();
+	static {
+		dec.onMalformedInput(CodingErrorAction.REPORT);
+		dec.onUnmappableCharacter(CodingErrorAction.REPORT);
+		dec.replaceWith("Σ");
+	}
 
 	///////////////////////////////////////////////////////
 	//
-	public static String ParseUrlEncoded (final char[] chars, final Ref<Integer> off) {
-		final StringBuilder bob = new StringBuilder(1 << 14);
+	public static String ParseUrlEncoded (final char[] chars, final Ref<Integer> off) throws CharacterCodingException {
+		final ByteBuffer bbuf = ByteBuffer.allocate(chars.length / 3 + 1);
+		assert bbuf.remaining() ==  chars.length / 3 + 1;
 		
 		for (int i = off.Deref(); i < chars.length && chars[i] == '%'; i += 3, off.Assign(i)) {
 			final int	high = Character.getNumericValue(chars[i+1]),
@@ -36,28 +43,14 @@ public class Url {
 			final int b = (high << 4 ) | low;
 			assert b <= 0xff && b >= 0;
 
-			bbuf1.clear();
-			bbuf1.put((byte) b);
-			
-			cbuf1.clear();
-			
-			try {
-				Encodings.FullDecode(dec, bbuf1, cbuf1);
-			}
-			catch (final RuntimeException wat) {
-				throw new AssertionError("", wat);
-			}
-			
-			assert bbuf1.remaining() == 0;
-			assert cbuf1.remaining() == 1;
-
-			bob.append(cbuf1.get());
+			bbuf.put((byte) b);
 		}
-		
-		return bob.toString();
+
+		bbuf.flip();
+		return dec.decode(bbuf).toString();
 	}
 	
-	public static String ParseUrl (final String url) {
+	public static String ParseUrl (final String url) throws CharacterCodingException {
 		final StringBuilder bob = new StringBuilder(url.length());
 		final char[] chars = url.toCharArray();
 		
@@ -105,19 +98,17 @@ public class Url {
 		
 		for (final char c: url.toCharArray())
 			if (MustBeUrlEscaped(c)) {
-				cbuf1.clear();
-				cbuf1.put(c);
-				
 				bbuf1.clear();
 				
 				try {
-					Encodings.FullEncode(enc, cbuf1, bbuf1);
+					Encodings.FullEncode1(enc, c, bbuf1);
 				}
 				catch (final RuntimeException wat) {
 					throw new AssertionError("", wat);
 				}
 				
-				assert cbuf1.remaining() == 0;
+				assert bbuf1.remaining() == 0;
+				bbuf1.flip();
 				assert bbuf1.remaining() == 1;
 				
 				bob.append("%").append(ByteToHexString(bbuf1.get()));

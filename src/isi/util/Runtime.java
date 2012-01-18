@@ -23,6 +23,16 @@ public class Runtime {
 	}
 	
 	///////////////////////////////////////////////////////
+	// Util extensions
+	public static void PushDefault () {
+		PushRuntime(CreateDefault());
+	}
+	
+	public static void cd (final String relPath) {
+		PushRuntime(new Runtime(new Cwd(GetCurrentCwd().resolve(relPath))));
+	}
+	
+	///////////////////////////////////////////////////////
 	// Runtime
 	public Cwd GetCwd () {
 		return cwd;
@@ -39,6 +49,12 @@ public class Runtime {
 	// construcors
 	public Runtime (final Cwd cwd) {
 		this.cwd = cwd;
+	}
+	
+	///////////////////////////////////////////////////////
+	// Factories
+	public static Runtime CreateDefault () {
+		return new Runtime(new Cwd(Objects.toString(System.getProperty("user.dir"), ".")));
 	}
 	
 	///////////////////////////////////////////////////////
