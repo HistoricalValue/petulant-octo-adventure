@@ -117,13 +117,13 @@ public abstract class ByteArrayTransformer implements Cloneable {
      * Note: when transform() is called again after an OutputBufferTooShortException
      * exception has been thrown, then it is expected that the same input bytes
      * are used.
-     * 
+     *
      * @param inbuf
      * @param inbuf_off
      * @param len
      * @param outbuf
      * @param outbuf_off
-     * @param outbuf_len 
+     * @param outbuf_len
      * @return the number of byte written to outbuf
      * @throws TransformationException
      */
@@ -134,13 +134,13 @@ public abstract class ByteArrayTransformer implements Cloneable {
      * If a TransformationException is thrown and transformFinal() is called
      * again with a larger buffer size, the same input bytes are expected to
      * be passed. Otherwise, its behaviour is undefined.
-     * 
+     *
      * @param inbuf
      * @param inbuf_off
      * @param len
      * @param outbuf
      * @param outbuf_off
-     * @param outbuf_len 
+     * @param outbuf_len
      * @return
      * @throws TransformationException
      */

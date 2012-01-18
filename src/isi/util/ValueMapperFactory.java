@@ -1,7 +1,7 @@
 package isi.util;
 
 public class ValueMapperFactory {
-	
+
 	public static <F> ValueMapper<F, String> newStringifier () {
 		return new ValueMapper<F, String>() {
 			@Override
@@ -10,9 +10,9 @@ public class ValueMapperFactory {
 			}
 		};
 	}
-	
+
 	///////////////////////////////////////////////////////
-	
+
 	private ValueMapperFactory () {
 	}
 }

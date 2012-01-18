@@ -178,7 +178,7 @@ public class Streams {
             else
                 offset += r;
             ++tries;
-            
+
             haveMoreTries = number_of_tries == 0 || tries < number_of_tries;
             haveMoreSpace = offset-off < len;
         }

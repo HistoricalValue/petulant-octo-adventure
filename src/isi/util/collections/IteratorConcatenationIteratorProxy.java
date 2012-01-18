@@ -52,7 +52,7 @@ public class IteratorConcatenationIteratorProxy<T> implements Iterator<T> {
     }
 
     /**
-     * 
+     *
      * @param ite
      * @return this
      */

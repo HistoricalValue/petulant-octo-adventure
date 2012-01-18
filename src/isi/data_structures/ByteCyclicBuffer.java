@@ -22,19 +22,19 @@ public class ByteCyclicBuffer implements Cloneable, ByteBuffer  {
 	@Override
 	public java.nio.ByteBuffer ToByteBuffer () {
 		assert p_invariablesHold();
-		
+
 		final java.nio.ByteBuffer buf = java.nio.ByteBuffer.allocate(available());
-		
+
 		if (isStore_index_wrapped()) {
 			buf.put(buffer, getRead_index(), buffer.length - getRead_index());
 			buf.put(buffer, 0, getStore_index());
 		}
 		else
 			buf.put(buffer, getRead_index(), getStore_index() - getRead_index());
-		
+
 		return buf;
 	}
-	
+
     @Override
     public ByteCyclicBuffer appendva (final byte... block) throws StorageException {
         return append(block);
@@ -291,7 +291,7 @@ public class ByteCyclicBuffer implements Cloneable, ByteBuffer  {
                 skip_remaining -= to_skip2;
                 assert p_invariablesHold();
             }
-            
+
         }
         else {
             final int read_to_store = getStore_index()-1 -getRead_index() +1;
@@ -308,7 +308,7 @@ public class ByteCyclicBuffer implements Cloneable, ByteBuffer  {
         assert skip_remaining == 0;
         return _l;
     }
-    
+
     /**
      * used for cloning.
      * @param buffer

@@ -15,27 +15,27 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Server {
-	
+
 	///////////////////////////////////////////////////////
 	// state
 	private final ServerSocket sock;
 	private final List<RequestHandler> handlers = new LinkedList<>();
-	
+
 	///////////////////////////////////////////////////////
 	// constructors
 	public Server (final ServerSocket sock) {
 		this.sock = sock;
 	}
-	
+
 	///////////////////////////////////////////////////////
 	//
 	public Server AddHandler (final RequestHandler handler) {
 		handlers.add(handler);
 		return this;
 	}
-	
+
 	///////////////////////////////////////////////////////
-	// 
+	//
 	public void Serve () throws IOException {
 		try (final Socket client = sock.accept()) {
 		//
@@ -70,7 +70,7 @@ public class Server {
 			L().e(ioex);
 		}
 	}
-	
+
 	///////////////////////////////////////////////////////
 	// private
 	private void NotifyHandlers (final Response res, final Writer w, final Request req) throws IOException {

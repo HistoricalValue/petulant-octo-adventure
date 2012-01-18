@@ -33,7 +33,7 @@ public class Bytes {
                 ) == h;
         return result;
     }
-    
+
     private Bytes(){}
     private static final Logger LOG = Logger.getLogger(Bytes.class.getName());
 }

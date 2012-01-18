@@ -44,7 +44,7 @@ public class Builder05<T, T00, T01, T02, T03, T04, T05> {
 		this.type04 = type04;
 		this.type05 = type05;
 	}
-	
+
 	///////////////////////////////////////////////////////
 	//
 	public T Build ()
@@ -68,12 +68,12 @@ public class Builder05<T, T00, T01, T02, T03, T04, T05> {
 		this.v00 = v00;
 		set00 = true;
 	}
-	
+
 	public T00 Get00 () {
 		assert set00;
 		return v00;
 	}
-	
+
 	public boolean IsSet00 () {
 		return set00;
 	}
@@ -85,12 +85,12 @@ public class Builder05<T, T00, T01, T02, T03, T04, T05> {
 		this.v01 = v01;
 		set01 = true;
 	}
-	
+
 	public T01 Get01 () {
 		assert set01;
 		return v01;
 	}
-	
+
 	public boolean IsSet01 () {
 		return set01;
 	}
@@ -102,12 +102,12 @@ public class Builder05<T, T00, T01, T02, T03, T04, T05> {
 		this.v02 = v02;
 		set02 = true;
 	}
-	
+
 	public T02 Get02 () {
 		assert set02;
 		return v02;
 	}
-	
+
 	public boolean IsSet02 () {
 		return set02;
 	}
@@ -119,12 +119,12 @@ public class Builder05<T, T00, T01, T02, T03, T04, T05> {
 		this.v03 = v03;
 		set03 = true;
 	}
-	
+
 	public T03 Get03 () {
 		assert set03;
 		return v03;
 	}
-	
+
 	public boolean IsSet03 () {
 		return set03;
 	}
@@ -136,12 +136,12 @@ public class Builder05<T, T00, T01, T02, T03, T04, T05> {
 		this.v04 = v04;
 		set04 = true;
 	}
-	
+
 	public T04 Get04 () {
 		assert set04;
 		return v04;
 	}
-	
+
 	public boolean IsSet04 () {
 		return set04;
 	}
@@ -153,12 +153,12 @@ public class Builder05<T, T00, T01, T02, T03, T04, T05> {
 		this.v05 = v05;
 		set05 = true;
 	}
-	
+
 	public T05 Get05 () {
 		assert set05;
 		return v05;
 	}
-	
+
 	public boolean IsSet05 () {
 		return set05;
 	}

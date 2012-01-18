@@ -16,15 +16,15 @@ public class AutoLogger {
 	public void fff (final Object o) {
 		logger.log(Level.FINEST, o.toString());
 	}
-	
+
 	public void i (final Object o) {
 		logger.log(Level.INFO, o.toString());
 	}
-	
+
 	public void w (final Object o) {
 		logger.log(Level.WARNING, o.toString());
 	}
-	
+
 	public void e (final Object o) {
 		logger.log(Level.SEVERE, o.toString());
 	}

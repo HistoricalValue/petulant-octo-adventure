@@ -10,12 +10,12 @@ import java.util.Iterator;
  * @author Amalia
  */
 public class Strings {
-	
+
 	///////////////////////////////////////////////////////
 	// constructor
 	private Strings () {
 	}
-	
+
 	///////////////////////////////////////////////////////
 	//
 	public static String Escape (final String str) {
@@ -24,43 +24,43 @@ public class Strings {
 	public static String Escape (final Object o) {
 		return Escape(o.toString());
 	}
-	
+
 	///////////////////////////////////////////////////////
 	//
 	public static String ToJavaLiteral (final Reader r) throws IOException {
 		final StringBuilder bob = new StringBuilder(1 << 14);
 		final BufferedReader br = new BufferedReader(r);
-		
+
 		bob.append("\"\"");
-		
+
 		for (String line = br.readLine(); line != null; line = br.readLine())
 			bob.append("\n+ \"").append(Escape(line)).append("\\n\"");
-		
+
 		bob.append(";");
-		
+
 		return bob.toString();
 	}
-	
+
 	///////////////////////////////////////////////////////
 	//
 	public static <T> String Join (final Iterable<? extends T> iterable, final String joint) {
 		final Iterator<? extends T> ite = iterable.iterator();
-		
+
 		if (!ite.hasNext())
 			return "";
-		
+
 		{
 			final StringBuilder bob = new StringBuilder(1 << 14);
-			
+
 			bob.append(ite.next().toString());
-			
+
 			while (ite.hasNext())
 				bob.append(joint).append(ite.next().toString());
-			
+
 			return bob.toString();
 		}
 	}
-	
+
 	public static <T> String Join (final T[] array, final String joint) {
 		return Join(java.util.Arrays.asList(array), joint);
 	}

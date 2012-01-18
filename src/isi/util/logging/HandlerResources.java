@@ -1,7 +1,7 @@
 package isi.util.logging;
 
 public class HandlerResources {
-	
+
 	public static String GetScript () {
 		return ""
 				+ "function _ (name)\n"
@@ -80,7 +80,7 @@ public class HandlerResources {
 				+ "}\n"
 				+ "\n";
 	}
-	
+
 	public static String GetStylesheet () {
 		return ""
 				+ "body {\n"

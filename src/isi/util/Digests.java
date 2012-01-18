@@ -26,7 +26,7 @@ public class Digests {
         }
     }
 
-    
+
     public static String md5(final InputStream ins) throws IOException {
         return md52str(md5bytes(ins));
     }

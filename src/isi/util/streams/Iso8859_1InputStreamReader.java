@@ -16,13 +16,13 @@ public class Iso8859_1InputStreamReader extends Reader {
 	private final InputStream ins;
 	// utils
 	private final CharsetDecoder dec = Charset.forName("ISO8859-1").newDecoder();
-	
+
 	///////////////////////////////////////////////////////
 	// constructors
 	public Iso8859_1InputStreamReader (final InputStream ins) {
 		this.ins = ins;
 	}
-	
+
 	///////////////////////////////////////////////////////
 	//
 	@Override
@@ -30,7 +30,7 @@ public class Iso8859_1InputStreamReader extends Reader {
 		final byte[] buf = new byte[len];
 		final int bytesRead = ins.read(buf);
 		assert bytesRead <= len;
-		
+
 		if (bytesRead > 0) {
 			final CharBuffer charbuf = CharBuffer.wrap(cbuf, off, bytesRead);
 			charbuf.clear();
@@ -44,7 +44,7 @@ public class Iso8859_1InputStreamReader extends Reader {
 
 			assert charbuf.remaining() == 0;
 		}
-		
+
 		return bytesRead;
 	}
 
@@ -54,5 +54,5 @@ public class Iso8859_1InputStreamReader extends Reader {
 	public void close () throws IOException {
 		ins.close();
 	}
-	
+
 }

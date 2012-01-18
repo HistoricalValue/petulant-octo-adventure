@@ -1,7 +1,7 @@
 package isi.util.html;
 
 public class Helpers {
-	
+
 	///////////////////////////////////////////////////////
 	//
 	public static String h (final String str) {
@@ -12,7 +12,7 @@ public class Helpers {
 				.replaceAll("<", "&lt;")
 				.replaceAll(">", "&gt;");
 	}
-	
+
 	///////////////////////////////////////////////////////
 	//
 	private Helpers () {

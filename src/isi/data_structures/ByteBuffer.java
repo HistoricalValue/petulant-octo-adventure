@@ -40,6 +40,6 @@ public interface ByteBuffer {
      */
     public ByteCyclicBuffer restore();
     public boolean restoreAvailable();
-	
+
 	public java.nio.ByteBuffer ToByteBuffer ();
 }

@@ -10,13 +10,13 @@ public class HtmlReaderViewing implements Viewing, Closeable, AutoCloseable {
 	///////////////////////////////////////////////////////
 	// state
 	final Reader r;
-	
+
 	///////////////////////////////////////////////////////
 	//
 	public HtmlReaderViewing (final Reader r) {
 		this.r = r;
 	}
-	
+
 	///////////////////////////////////////////////////////
 	//
 	@Override
@@ -26,14 +26,14 @@ public class HtmlReaderViewing implements Viewing, Closeable, AutoCloseable {
 
 	///////////////////////////////////////////////////////
 	//
-	
+
 	/**
 	 * Closes the wrapped reader.
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	@Override
 	public void close () throws IOException {
 		r.close();
 	}
-	
+
 }

@@ -16,12 +16,12 @@ import java.util.regex.Pattern;
  * @author Amalia
  */
 public class Handler extends java.util.logging.Handler {
-	
+
 	///////////////////////////////////////////////////////
-	
+
 	public Handler (final Writer w) throws IOException {
 		this.w = w;
-		
+
 		w.append( ""
 				+ "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\"\n"
 				+ "    \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n"
@@ -45,14 +45,14 @@ public class Handler extends java.util.logging.Handler {
 		.append(HandlerResources.GetScript())
 		;
 	}
-	
+
 	///////////////////////////////////////////////////////
-	
+
 	@Override
 	public void publish (final LogRecord r) {
 		records.add(r);
 	}
-	
+
 	///////////////////////////////////////////////////////
 
 	@Override
@@ -60,7 +60,7 @@ public class Handler extends java.util.logging.Handler {
 	}
 
 	///////////////////////////////////////////////////////
-	
+
 	@Override
 	public void close () throws SecurityException {
 		checkLoggingPermission();
@@ -80,7 +80,7 @@ public class Handler extends java.util.logging.Handler {
 			ok.SpoilOk(ex);
 		}
 	}
-	
+
 	///////////////////////////////////////////////////////
 
 	private void WriteControls () throws IOException {
@@ -101,7 +101,7 @@ public class Handler extends java.util.logging.Handler {
 
 		w.append("\t</div> <!-- controls -->\n\n");
 	}
-	
+
 	private void WriteJsInitialiseFunction (final String[][] levels) throws IOException {
 		w.append("\n\n"
 				+ "function Initialise () {\n"
@@ -110,20 +110,20 @@ public class Handler extends java.util.logging.Handler {
 				+ "	G.OFF_CLASS		= \"off\"		;\n"
 				+ "	G.OFF_TEXT		= \"OFF\"		;\n"
 				+ "	G.RecordLevel	= {}			;\n");
-				
+
 		for (final String[] level: levels)
 			w.append("	G.RecordLevel.").append(level[0]).append(" = \"").append(level[1]).append("\";\n")
 					.append("	G[MakeSwitchPanelId(\"").append(level[0]).append("\")] = $(MakeSwitchPanelId(\"").append(level[0]).append("\"));\n")
 					.append("	G[MakeSwitchPanelId(\"").append(level[0]).append("\")].onclick = MakeSwitcher(\"").append(level[0]).append("\");\n");
-					
+
 		w.append("}\n");
 	}
-	
+
 	private void WriteHtmlRecords () throws IOException {
 		for (final LogRecord r: records)
 			WriteHtmlRecord(r);
 	}
-	
+
 	private void WriteHtmlRecord (final LogRecord r) throws IOException {
 		w.append("<div class=\"record ")
 				.append(isi.util.html.Helpers.h(r.getLevel().toString()))
@@ -135,17 +135,17 @@ public class Handler extends java.util.logging.Handler {
 				.append(isi.util.html.Helpers.h(r.getMessage()))
 				.append("</div></div> <!-- record --> \n");
 	}
-	
+
 	private void WriteJavascriptRecords () throws IOException {
 		w.append("\n\nrecords = [");
-		
+
 		for (final LogRecord r: records) {
 			final String loggerName = r.getLoggerName();
 			final String[] loggerPath = DOT.split(loggerName);
 			w.append("\n\t{\n\t\t\"logger\": [");
 			for (final String p: loggerPath)
 				w.append("\"").append(p).append("\", ");
-			
+
 			w
 					.append("],\n\t\t  \"level\": \"").append(r.getLevel().toString())
 					.append("\",\n\t\t \"message\": \"").append(Strings.Escape(r.getMessage()))
@@ -156,40 +156,40 @@ public class Handler extends java.util.logging.Handler {
 					.append(",\n\t\t \"class\": \"").append(r.getSourceClassName())
 					.append("\",\n\t\t \"method\": \"").append(r.getSourceMethodName())
 					.append("\",\n\t\t \"parameters\": ");
-			
+
 			if (r.getParameters() != null) {
 				w.append("[");
 				for (final Object param: r.getParameters())
 					w.append("\"").append(Strings.Escape(param)).append("\", ");
 				w.append("]");
 			}
-			else 
+			else
 				w.append("null");
-			
+
 			w.append(",\n\t\t \"throwable\": ");
 			if (r.getThrown() == null)
 				w.append("null");
 			else
 				w.append("\"").append(Strings.Escape(Throwables.toString(r.getThrown()))).append("\"");
-			
+
 			w.append("},");
 		}
-		
+
 		w.append("];");
 	}
-	
+
 	private static void checkLoggingPermission () {
 		final SecurityManager securityManager = System.getSecurityManager();
 		if (securityManager != null)
 			securityManager.checkPermission(new LoggingPermission("control", null));
 	}
-	
+
 	///////////////////////////////////////////////////////
 	// private
 	private class AllOk {
 		private boolean ok = true;
 		private Throwable reason;
-		
+
 		void SpoilOk (final Throwable reason) {
 			if (ok) {
 				ok = false;
@@ -198,23 +198,23 @@ public class Handler extends java.util.logging.Handler {
 			else
 				throw new RuntimeException(reason);
 		}
-		
+
 		boolean IsOk () {
 			return ok;
 		}
-		
+
 		Throwable GetReason () {
 			return reason;
 		}
 	}
-	
+
 	///////////////////////////////////////////////////////
 	// state
 	private final AllOk ok = new AllOk();
 	private boolean closed = false;
 	private final Writer w;
 	private final List<LogRecord> records = new LinkedList<>();
-	
+
 	///////////////////////////////////////////////////////
 	// common
 	private static final Pattern DOT = Pattern.compile("\\.");

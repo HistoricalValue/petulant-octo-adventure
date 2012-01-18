@@ -16,7 +16,7 @@ public class ByteBufferOutputStream extends OutputStream {
     public ByteBuffer getUnderlyingBuffer() {
         return buf;
     }
-    
+
     @Override
     public void close() throws IOException {
     }

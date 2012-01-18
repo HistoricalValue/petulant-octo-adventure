@@ -31,5 +31,5 @@ public enum StreamTokeniserTokenType {
 		}
 		throw new RuntimeException("No token type for value " + val);
 	}
-	
+
 }

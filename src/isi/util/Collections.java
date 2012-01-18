@@ -41,7 +41,7 @@ public class Collections {
         }
         out.print(']');
     }
-	
+
 	///////////////////////////////////////////////////////
 	public static <T> int size (final Iterable<? extends T> i) {
 		int size = 0;
@@ -49,7 +49,7 @@ public class Collections {
 			++size;
 		return size;
 	}
-	
+
 	///////////////////////////////////////////////////////
 	public static <T> ArrayList<T> newArrayList (final Iterable<? extends T> i, final int lengthHint) {
 		final ArrayList<T> result = new ArrayList<>(lengthHint);
@@ -57,32 +57,32 @@ public class Collections {
 			result.add(o);
 		return result;
 	}
-	
+
 	public static <T> LinkedList<T> newLinkedList (final Iterable<? extends T> i) {
 		final LinkedList<T> result = new LinkedList<>();
 		for (final T o: i)
 			result.add(o);
 		return result;
 	}
-	
+
 	///////////////////////////////////////////////////////
 	public static <T> List<T> newUnmodifiableList (final Iterable<? extends T> i, final int lengthHint) {
 		return java.util.Collections.unmodifiableList(newArrayList(i, lengthHint));
 	}
-	
+
 	public static <T> List<T> newUnmodifiableList (final Iterable<? extends T> i) {
 		return java.util.Collections.unmodifiableList(newLinkedList(i));
 	}
-	
+
 	public static <T> List<T> newUnmodifiableList (final Collection<T> col) {
 		return newUnmodifiableList(col, col.size());
 	}
-	
+
 	public static <T> Deque<T> newUnmodifiableDeque (final Iterable<? extends T> i) {
 		return new Deque<T> () {
 			private final LinkedList<T> list = newLinkedList(i);
 			private final List<T> unmod = java.util.Collections.unmodifiableList(list);
-			
+
 			@Override
 			public void addFirst (final T e) {
 				throw new UnsupportedOperationException("Not permited.");
@@ -217,7 +217,7 @@ public class Collections {
 			public Iterator<T> descendingIterator () {
 				return new Iterator<T> () {
 					final Iterator<T> ite = list.descendingIterator();
-					
+
 					@Override
 					public boolean hasNext () {
 						return ite.hasNext();
@@ -276,20 +276,20 @@ public class Collections {
 			}
 		};
 	}
-	
+
 	///////////////////////////////////////////////////////
 	private static <F, T> Collection<? super T> map (final Iterable<? extends F> l, final Collection<? super T> into, final ValueMapper<? super F, ? extends T> m) {
 		for (final F unmapped: l)
 			into.add(m.map(unmapped));
 		return into;
 	}
-	
+
 	public static <F, T> LinkedList<T> map (final List<? extends F> l, final ValueMapper<? super F, ? extends T> m) {
 		final LinkedList<T> mapped = new LinkedList<>();
 		map(l, mapped, m);
 		return mapped;
 	}
-	
+
 	///////////////////////////////////////////////////////
 	public static <T> LinkedList<T> select (final Iterable<? extends T> i, final Predicate<? super T> pred) {
 		final LinkedList<T> result = new LinkedList<>();
@@ -298,13 +298,13 @@ public class Collections {
 				result.add(obj);
 		return result;
 	}
-	
+
 	public static <T> LinkedList<T> select (final Iterable<? extends T> i) {
 		return select(i, Predicates.newNotNull());
 	}
-	
+
 	///////////////////////////////////////////////////////
-	
+
     private Collections() {
     }
     private static final Logger LOG = Logger.getLogger(Collections.class.getName());

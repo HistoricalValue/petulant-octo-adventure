@@ -8,7 +8,7 @@ public class MultiWriterDelegate extends Writer {
 	///////////////////////////////////////////////////////
 	// state
 	private final Iterable<? extends Writer> writers;
-	
+
 	///////////////////////////////////////////////////////
 	//
 	public MultiWriterDelegate (final Iterable<? extends Writer> writers) {
@@ -17,7 +17,7 @@ public class MultiWriterDelegate extends Writer {
 	public MultiWriterDelegate (Writer... writers) {
 		this(java.util.Arrays.asList(writers));
 	}
-	
+
 	@Override
 	public Writer append (final CharSequence csq) throws IOException {
 		for (final Writer a: writers)
@@ -56,5 +56,5 @@ public class MultiWriterDelegate extends Writer {
 		for (final Writer a: writers)
 			a.close();
 	}
-	
+
 }

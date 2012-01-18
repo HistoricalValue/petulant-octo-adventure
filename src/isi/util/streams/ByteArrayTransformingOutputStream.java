@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 public class ByteArrayTransformingOutputStream extends FilterOutputStream {
 
     public static final int DEFAULT_BUF_LENGTH = 8*1024;
-    
+
     /// Layer 3 - uses self public API (aliases)
     @Override
     public void write(final byte[] b) throws IOException {

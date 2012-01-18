@@ -12,7 +12,7 @@ public class ByteBufferInputStream extends InputStream {
     /**
      * The buffer is not supposed to be altered while for as long as it's used
      * by this stream.
-     * 
+     *
      * @param _buf
      */
     public ByteBufferInputStream(final ByteBuffer _buf) {

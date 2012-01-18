@@ -19,7 +19,7 @@ public class DeflaterByteArrayTransformer extends ByteArrayTransformer {
     public DeflaterByteArrayTransformer() {
         this(new Deflater(Deflater.BEST_COMPRESSION, false));
     }
-    
+
     @Override
     protected int transform(final byte[] inbuf, final int inbuf_off,
             final int len, final byte[] outbuf, final int outbuf_off,
@@ -39,7 +39,7 @@ public class DeflaterByteArrayTransformer extends ByteArrayTransformer {
         else
             result = 0;
             // nothing till return()
-        
+
         // deflator.needsInput()
         // result >= 0
         return result;
@@ -54,14 +54,14 @@ public class DeflaterByteArrayTransformer extends ByteArrayTransformer {
         assert deflator.needsInput();
         final int _outbuf_len = Math.min(outbuf_len, outbuf.length-1 -outbuf_off +1);
         int result;
-        
+
         if (!finalised) {
             assert !deflator.finished();
             deflator.finish();
             p_compress_data(inbuf, inbuf_off, len, outbuf, outbuf_off, _outbuf_len);
             finalised = true;
         }
-        
+
         assert deflator.finished();
         assert deflator.needsInput();
         result = p_writeAllToOut(outbuf, outbuf_off, _outbuf_len);

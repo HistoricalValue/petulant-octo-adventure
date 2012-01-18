@@ -7,7 +7,7 @@ public class MultiAppendableDelegate implements Appendable {
 	///////////////////////////////////////////////////////
 	// state
 	private final Iterable<? extends Appendable> appendables;
-	
+
 	///////////////////////////////////////////////////////
 	//
 	public MultiAppendableDelegate (final Iterable<? extends Appendable> appendables) {
@@ -16,7 +16,7 @@ public class MultiAppendableDelegate implements Appendable {
 	public MultiAppendableDelegate (Appendable... appendables) {
 		this(java.util.Arrays.asList(appendables));
 	}
-	
+
 	@Override
 	public Appendable append (final CharSequence csq) throws IOException {
 		for (final Appendable a: appendables)
@@ -37,5 +37,5 @@ public class MultiAppendableDelegate implements Appendable {
 			a.append(c);
 		return this;
 	}
-	
+
 }

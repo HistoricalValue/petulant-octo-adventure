@@ -7,7 +7,7 @@ public class VoidWriter extends java.io.Writer {
 	private boolean closed;
 
 	/**
-	 * 
+	 *
 	 * @param cbuf
 	 * @param off
 	 * @param len
@@ -16,7 +16,7 @@ public class VoidWriter extends java.io.Writer {
 	 */
 	@Override
 	public void write (char[] cbuf, int off, int len) throws IOException, ArrayIndexOutOfBoundsException {
-		final int illegalIndex = 
+		final int illegalIndex =
 				off < 0? off :
 				len < 0? len :
 				off >= cbuf.length? off :
@@ -29,7 +29,7 @@ public class VoidWriter extends java.io.Writer {
 	}
 
 	/**
-	 * 
+	 *
 	 * @throws IOException if writer has been closed
 	 */
 	@Override
@@ -39,7 +39,7 @@ public class VoidWriter extends java.io.Writer {
 	}
 
 	/**
-	 * 
+	 *
 	 * @throws IOException if writer has been closed
 	 */
 	@Override
@@ -47,5 +47,5 @@ public class VoidWriter extends java.io.Writer {
 		flush();
 		closed = true;
 	}
-	
+
 }

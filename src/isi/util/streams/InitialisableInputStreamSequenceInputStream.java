@@ -116,7 +116,7 @@ public class InitialisableInputStreamSequenceInputStream extends InitialisableIn
     @Override
     public void cleanup () throws IOException {
     }
-    
+
     private interface readop { int readon(InitialisableInputStream iins) throws IOException; }
     @SuppressWarnings("NestedAssignment")
     private int p_sequential_read(final readop rop) throws IOException {

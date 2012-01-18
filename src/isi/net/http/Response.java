@@ -7,12 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Response {
-	
+
 	///////////////////////////////////////////////////////
 	// state
 	private Status status;
 	private final ResponseRequestFields fields = new ResponseRequestFields();
-	
+
 	///////////////////////////////////////////////////////
 	// constructors
 	public Response () {
@@ -21,30 +21,30 @@ public class Response {
 				.AddField("Pragma-directive", "no-cache")
 				.AddField("Cache-directive", "no-cache");
 	}
-	
+
 	///////////////////////////////////////////////////////
 	//
 	public Response SetStatus (final Status status) {
 		this.status = status;
 		return this;
 	}
-	
+
 	public Response SetContentLength (final int length) {
 		fields.SetValue("Content-length", Integer.toString(length));
 		return this;
 	}
-	
+
 	public Response SetContentType (final ContentType type) {
 		final List<String> values = new ArrayList<>(2);
 		values.add(type.GetHeaderString());
-		
+
 		if (type.IsText())
 			values.add("charset=utf8");
-		
+
 		fields.SetValue("Content-type", values);
 		return this;
 	}
-	
+
 	public Writer WriteTo (final Writer w) throws IOException {
 		w
 				.append("HTTP/1.1 ")

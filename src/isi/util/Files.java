@@ -1,7 +1,7 @@
 package isi.util;
 
 public class Files {
-	
+
 	///////////////////////////////////////////////////////
 	//
 	public static String GetExtension (final String path) {
@@ -11,7 +11,7 @@ public class Files {
 		assert dot <= path.length();
 		return path.substring(dot + 1);
 	}
-	
+
 	///////////////////////////////////////////////////////
 	//
 	private Files () {

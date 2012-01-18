@@ -19,7 +19,7 @@ public class Builder00<T, T00> {
 		this.type = type;
 		this.type00 = type00;
 	}
-	
+
 	///////////////////////////////////////////////////////
 	//
 	public T Build ()
@@ -43,12 +43,12 @@ public class Builder00<T, T00> {
 		this.v00 = v00;
 		set00 = true;
 	}
-	
+
 	public T00 Get00 () {
 		assert set00;
 		return v00;
 	}
-	
+
 	public boolean IsSet00 () {
 		return set00;
 	}

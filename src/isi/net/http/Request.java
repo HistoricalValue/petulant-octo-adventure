@@ -5,11 +5,11 @@ import isi.util.charstreams.Encodings;
 import java.nio.charset.Charset;
 
 public class Request {
-	
+
 	///////////////////////////////////////////////////////
-	
+
 	public static final Charset Encoding = Encodings.UTF8;
-		
+
 	///////////////////////////////////////////////////////
 	// state
 	private final Method method;
@@ -24,20 +24,20 @@ public class Request {
 		this.path = path;
 		this.version = version;
 	}
-	
+
 	///////////////////////////////////////////////////////
 	//
-	
+
 	public String GetPath () {
 		return path;
 	}
-	
+
 	///////////////////////////////////////////////////////
 
 	public ResponseRequestFields GetFields () {
 		return fields;
 	}
-	
+
 	///////////////////////////////////////////////////////
 	// Object
 	@Override
@@ -45,7 +45,7 @@ public class Request {
 		final StringBuilder bob = new StringBuilder(1 << 14);
 		bob.append(method).append(" ").append(path).append(" ").append(version).append("\n")
 				.append(fields).append("\n");
-		
+
 		return bob.toString();
 	}
 }

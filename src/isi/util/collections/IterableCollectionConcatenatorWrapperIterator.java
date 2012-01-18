@@ -12,7 +12,7 @@ public class IterableCollectionConcatenatorWrapperIterator<T> implements Iterato
     public IterableCollectionConcatenatorWrapperIterator(final Collection<? extends Iterable<? extends T>> _iterables) {
         iterables = _iterables.iterator();
     }
-    
+
     @Override
     @SuppressWarnings("NestedAssignment")
     public boolean hasNext() {

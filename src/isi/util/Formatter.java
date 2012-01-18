@@ -8,7 +8,7 @@ public class Formatter implements Closeable, Flushable, AutoCloseable, Appendabl
 	///////////////////////////////////////////////////////
 	// state
 	private final java.util.Formatter f;
-	
+
 	///////////////////////////////////////////////////////
 	// constructors
 	public Formatter (final Appendable app) {
@@ -21,7 +21,7 @@ public class Formatter implements Closeable, Flushable, AutoCloseable, Appendabl
 		f.format(fmt, (Object) params);
 		return this;
 	}
-	
+
 	@Override
 	public void close () {
 		f.close();
@@ -48,5 +48,5 @@ public class Formatter implements Closeable, Flushable, AutoCloseable, Appendabl
 		f.format("%c", c);
 		return this;
 	}
-	
+
 }
