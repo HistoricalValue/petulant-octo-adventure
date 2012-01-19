@@ -46,11 +46,11 @@ public class Server {
 		//
 			final Request request = new RequestParser(r).Parse();
 			final Response response = new Response();
-		
+
 			try (final OutputStreamWriter baoutsw = new OutputStreamWriter(baouts, Request.Encoding)) {
 				NotifyHandlers(response, baoutsw, request);
 			}
-			
+
 			response.SetContentLength(baouts.size());
 			try (final ByteArrayOutputStream responseBaouts = new ByteArrayOutputStream(1 << 10)) {
 			try (final OutputStreamWriter responseBaoutsw = new OutputStreamWriter(responseBaouts, Request.Encoding)) {

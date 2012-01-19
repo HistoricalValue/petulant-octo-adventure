@@ -4,6 +4,7 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Deque;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -14,10 +15,18 @@ import java.util.logging.Logger;
  * @author TURBO_X
  */
 public class Collections {
-    public static <T> T addAndReturn(final Collection<T> col, final T obj) {
+
+	public static <T> T addAndReturn(final Collection<T> col, final T obj) {
         col.add(obj);
         return obj;
     }
+
+	public static <T> Collection<? super T> addAllTo (final Collection<? super T> col, final Iterable<? extends T> iterable) {
+		for (final T obj: iterable)
+			col.add(obj);
+		return col;
+	}
+
     public static <T> T find(final Iterable<? extends T> col, final Predicate<? super T> pred) {
         for (final T obj : col)
             if (pred.accept(obj))
@@ -301,6 +310,35 @@ public class Collections {
 
 	public static <T> LinkedList<T> select (final Iterable<? extends T> i) {
 		return select(i, Predicates.newNotNull());
+	}
+
+	///////////////////////////////////////////////////////
+	// Factories for collections
+	public static <T> Factory<ArrayList<T>> defaultArrayListFactory (final int initialCapacity) {
+		return new Factory<ArrayList<T>>() {
+			@Override
+			public ArrayList<T> Create () throws FactoryException {
+				return new ArrayList<>(initialCapacity);
+			}
+		};
+	}
+
+	public static <T> Factory<LinkedList<T>> defaultLinkedListFactory () {
+		return new Factory<LinkedList<T>>() {
+			@Override
+			public LinkedList<T> Create () throws FactoryException {
+				return new LinkedList<>();
+			}
+		};
+	}
+
+	public static <K, V> Factory<HashMap<K, V>> defaultHashMapFactory (final int initialCapacity) {
+		return new Factory<HashMap<K, V>>() {
+			@Override
+			public HashMap<K, V> Create () throws FactoryException {
+				return new HashMap<>(initialCapacity);
+			}
+		};
 	}
 
 	///////////////////////////////////////////////////////
