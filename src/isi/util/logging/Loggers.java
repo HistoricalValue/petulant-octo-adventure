@@ -73,7 +73,7 @@ public class Loggers {
 	}
 	
 	private static String CreateLoggerId (final String name, final String instance) {
-		return name + "." + instance;
+		return name + "_" + instance;
 	}
 
 

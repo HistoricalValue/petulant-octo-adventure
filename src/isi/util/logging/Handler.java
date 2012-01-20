@@ -231,7 +231,9 @@ public class Handler extends java.util.logging.Handler {
 			};
 	private static final SimpleDateFormat dateFormat = (SimpleDateFormat) DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.FULL, Locale.UK);
 	static {
-		String toPattern = dateFormat.toPattern();
-		toPattern = toPattern.toLowerCase();
+		final String pattern = dateFormat.toPattern();
+		final int indexOfss = pattern.indexOf("ss");
+		final String newPattern = pattern.substring(0, indexOfss) + "ss:SSSS" + pattern.substring(indexOfss + 2);
+		dateFormat.applyPattern(newPattern);
 	}
 }
