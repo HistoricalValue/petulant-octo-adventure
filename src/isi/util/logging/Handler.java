@@ -3,10 +3,14 @@ package isi.util.logging;
 import isi.util.Strings;
 import isi.util.Throwables;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.Writer;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.logging.LogRecord;
 import java.util.logging.LoggingPermission;
 import java.util.regex.Pattern;
@@ -76,8 +80,9 @@ public class Handler extends java.util.logging.Handler {
 			WriteControls();
 			WriteHtmlRecords();
 			w.append("</body></html>").close();
-		} catch (final IOException ex) {
+		} catch (final Exception ex) {
 			ok.SpoilOk(ex);
+			ex.printStackTrace(new PrintWriter(w));
 		}
 	}
 
@@ -128,7 +133,7 @@ public class Handler extends java.util.logging.Handler {
 		w.append("<div class=\"record ")
 				.append(isi.util.html.Helpers.h(r.getLevel().toString()))
 				.append("\"><div class=\"date\">")
-				.append(isi.util.html.Helpers.h(new Date(r.getMillis()).toString()))
+				.append(isi.util.html.Helpers.h(dateFormat.format(new Date(r.getMillis()))))
 				.append("</div>\n<div class=\"logger\">")
 				.append(isi.util.html.Helpers.h(r.getLoggerName()))
 				.append("</div><div class=\"message\">")
@@ -211,7 +216,6 @@ public class Handler extends java.util.logging.Handler {
 	///////////////////////////////////////////////////////
 	// state
 	private final AllOk ok = new AllOk();
-	private boolean closed = false;
 	private final Writer w;
 	private final List<LogRecord> records = new LinkedList<>();
 
@@ -225,4 +229,9 @@ public class Handler extends java.util.logging.Handler {
 				new String[] {"warning", "WARNING"},
 				new String[] {"severe", "SEVERE"}
 			};
+	private static final SimpleDateFormat dateFormat = (SimpleDateFormat) DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.FULL, Locale.UK);
+	static {
+		String toPattern = dateFormat.toPattern();
+		toPattern = toPattern.toLowerCase();
+	}
 }

@@ -1,5 +1,8 @@
 package isi.util;
 
+import isi.util.logging.AutoLogger;
+import isi.util.logging.Loggers;
+import isi.util.reflect.Callers;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Objects;
@@ -8,7 +11,8 @@ public class Runtime {
 
 	///////////////////////////////////////////////////////
 	// Singleton
-	private static Deque<Runtime> runtimes = new LinkedList<>();
+	private static final Deque<Runtime> runtimes = new LinkedList<>();
+	private static final IdGenerator idgen = new IdGenerator("runtime_", "");
 
 	public static Runtime GetRuntime () {
 		return Objects.requireNonNull(runtimes.peek());
@@ -37,6 +41,10 @@ public class Runtime {
 	public Cwd GetCwd () {
 		return cwd;
 	}
+	
+	public AutoLogger GetLoggerFor (final Class<?> klass) {
+		return Loggers.GetLogger(klass, id);
+	}
 
 	///////////////////////////////////////////////////////
 	// Extensions/shortcuts
@@ -44,7 +52,14 @@ public class Runtime {
 		return GetRuntime().GetCwd();
 	}
 
+	public static AutoLogger GetCurrentLoggerFor (final Class<?> klass) {
+		return GetRuntime().GetLoggerFor(klass);
+	}
 
+	public static AutoLogger GetCurrentLogger () {
+		return GetCurrentLoggerFor(Callers.DetectCallerClass());
+	}
+	
 	///////////////////////////////////////////////////////
 	// construcors
 	public Runtime (final Cwd cwd) {
@@ -60,5 +75,5 @@ public class Runtime {
 	///////////////////////////////////////////////////////
 	// state
 	private final Cwd cwd;
-
+	private final String id = idgen.next();
 }
