@@ -4,15 +4,18 @@ public enum ContentType {
 	Html("text/html", true),
 	Css("text/css", true),
 	Javascript("text/javascript", true),
+	Plaintext("text/plain", true),
 
+	_7z("application/x-7z-compressed", false),
+	
 	Png("image/png", false),
-
-	Plaintext("text/plain", true);
+	
+	OctetStream("application/octet-stream", false);
 
 	public String GetHeaderString () {
 		return headerString;
 	}
-
+	
 	public boolean IsText () {
 		return isText;
 	}

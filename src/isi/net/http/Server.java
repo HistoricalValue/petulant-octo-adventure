@@ -6,11 +6,11 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
-import java.io.Writer;
 import java.net.SocketAddress;
 import java.nio.channels.Channels;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
+import java.nio.channels.WritableByteChannel;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -46,9 +46,9 @@ public class Server {
 		//
 			final Request request = new RequestParser(r).Parse();
 			final Response response = new Response();
-
-			try (final OutputStreamWriter baoutsw = new OutputStreamWriter(baouts, Request.Encoding)) {
-				NotifyHandlers(response, baoutsw, request);
+			
+			try (final WritableByteChannel baoutswch = Channels.newChannel(baouts)) {
+				NotifyHandlers(response, client, baoutswch, request);
 			}
 
 			response.SetContentLength(baouts.size());
@@ -68,8 +68,11 @@ public class Server {
 
 	///////////////////////////////////////////////////////
 	// private
-	private void NotifyHandlers (final Response res, final Writer w, final Request req) throws IOException {
+	private void NotifyHandlers (final Response res, final SocketChannel client, final WritableByteChannel w, final Request req) throws IOException {
 		for (final RequestHandler h : handlers)
-			h.Handle(res, w, req);
+			if (h.ShouldHandleDirect(req))
+				h.HandleDirect(res, client, req);
+			else
+				h.Handle(res, w, req);
 	}
 }
