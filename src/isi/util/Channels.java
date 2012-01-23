@@ -28,7 +28,8 @@ public class Channels {
 	public static OutputStream newUnclosableOutputStream (final WritableByteChannel channel) {
 		return new FilterOutputStream(java.nio.channels.Channels.newOutputStream(channel)) {
 			@Override
-			public void close () {
+			public void close () throws IOException {
+				flush();
 			}
 		};
 	}
@@ -36,7 +37,8 @@ public class Channels {
 	public static Writer newUnclosableWriter (final WritableByteChannel channel, final CharsetEncoder enc, final int minimumCapacity) {
 		return new FilterWriter(java.nio.channels.Channels.newWriter(channel, enc, minimumCapacity)) {
 			@Override
-			public void close () {
+			public void close () throws IOException {
+				flush();
 			}
 		};
 	}
