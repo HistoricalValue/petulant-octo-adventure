@@ -1,8 +1,8 @@
 package isi.net.frails;
 
 import isi.net.http.Request;
-import isi.net.http.Response;
+import isi.net.http.ResponseHeader;
 
 public interface Controller {
-	Viewing Handle (Response response, Request request);
+	Viewing Handle (ResponseHeader response, Request request);
 }

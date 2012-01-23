@@ -45,7 +45,7 @@ public class Server {
 		try (final ByteArrayOutputStream baouts = new ByteArrayOutputStream(1 << 14)) {
 		//
 			final Request request = new RequestParser(r).Parse();
-			final Response response = new Response();
+			final ResponseHeader response = new ResponseHeader();
 			
 			try (final WritableByteChannel baoutswch = Channels.newChannel(baouts)) {
 				NotifyHandlers(response, client, baoutswch, request);
@@ -68,7 +68,7 @@ public class Server {
 
 	///////////////////////////////////////////////////////
 	// private
-	private void NotifyHandlers (final Response res, final SocketChannel client, final WritableByteChannel w, final Request req) throws IOException {
+	private void NotifyHandlers (final ResponseHeader res, final SocketChannel client, final WritableByteChannel w, final Request req) throws IOException {
 		for (final RequestHandler h : handlers)
 			if (h.ShouldHandleDirect(req))
 				h.HandleDirect(res, client, req);
