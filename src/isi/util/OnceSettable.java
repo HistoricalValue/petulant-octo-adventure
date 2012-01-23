@@ -1,5 +1,7 @@
 package isi.util;
 
+import java.util.Objects;
+
 public class OnceSettable<T> {
 	private T val;
 	private boolean set = false;
@@ -47,6 +49,10 @@ public class OnceSettable<T> {
 
 	public T GetIfSet () {
 		return set? val : null;
+	}
+	
+	public T GetNotNull () {
+		return Objects.requireNonNull(GetIfSet());
 	}
 
 	public T UseUp () throws GetUnsetOrSetSetException {

@@ -1,54 +1,82 @@
 package isi.net.http;
 
+import isi.util.Channels;
 import java.io.IOException;
+import java.io.Writer;
 import java.nio.ByteBuffer;
 import java.nio.channels.WritableByteChannel;
 import java.nio.charset.Charset;
 
-public abstract class Response {
+public abstract class Response implements WritableByteChannel {
 	
 	///////////////////////////////////////////////////////
 	// state
 	private final ResponseHeader header = new ResponseHeader();
 	private final WritableByteChannel client;
+	private boolean closed = false;
+	
+	///////////////////////////////////////////////////////
+	// abstract
+	protected abstract void closeImpl (final WritableByteChannel client) throws IOException;
+	protected abstract int writeImpl (final ByteBuffer buf, final WritableByteChannel client) throws IOException;
 	
 	///////////////////////////////////////////////////////
 	//
-	public abstract Response SetStatus (final Status status);
-	public abstract Response SetContentLength (final long contentLength);
-	public abstract Response SetContentType (final ContentType contentType);
-	public abstract Response SetEncoding (final Charset encoding);
-	
-	public abstract Response WriteWhole (final ByteBuffer buf);
-	
-	///////////////////////////////////////////////////////
-	// protected
-	///////////////////////////////////////////////////////
-	protected Response SetStatusImpl (final Status status) {
+	public Response SetStatus (final Status status) throws IOException {
+		ensureOpen();
 		header.SetStatus(status);
 		return this;
 	}
 	
-	protected Response SetContentLengthImpl (final long contentLength) {
+	public Response SetContentLength (final long contentLength) throws IOException {
+		ensureOpen();
 		header.SetContentLength(contentLength);
 		return this;
 	}
 	
-	protected Response SetContentTypeImpl (final ContentType contentType) {
+	public Response SetContentType (final ContentType contentType) throws IOException {
+		ensureOpen();
 		header.SetContentType(contentType);
 		return this;
 	}
-	
-	protected Response SetEncodingImpl (final Charset encoding) {
+
+	public Response SetEncoding (final Charset encoding) throws IOException {
+		ensureOpen();
 		header.SetEncoding(encoding);
 		return this;
 	}
 	
 	///////////////////////////////////////////////////////
 	//
-	protected Response WriteWholeImpl (final ByteBuffer buf) throws IOException {
-		while (buf.hasRemaining())
-			client.write(buf);
+	@Override
+	public void close () throws IOException {
+		if (!closed)
+			closeImpl(client);
+		closed = true;
+	}
+	
+	@Override
+	public boolean isOpen () {
+		return !closed;
+	}
+	
+	@Override
+	public int write (final ByteBuffer buf) throws IOException {
+		ensureOpen();
+		return writeImpl(buf, client);
+	}
+	
+	///////////////////////////////////////////////////////
+	// protected
+	///////////////////////////////////////////////////////
+
+	///////////////////////////////////////////////////////
+	//
+	protected Response WriteHeader () throws IOException {
+		ensureOpen();
+		try (final Writer w = Channels.newUnclosableWriter(client, Request.Encoding.newEncoder(), 256)) {
+			header.WriteTo(w);
+		}
 		return this;
 	}
 	
@@ -58,4 +86,14 @@ public abstract class Response {
 		this.client = client;
 	}
 	
+	///////////////////////////////////////////////////////
+	// private
+	///////////////////////////////////////////////////////
+	
+	///////////////////////////////////////////////////////
+	//
+	private void ensureOpen () throws IOException {
+		if (closed)
+			throw new IOException("closed");
+	}
 }

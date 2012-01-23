@@ -15,6 +15,7 @@ public class ResponseHeader {
 	private OnceSettable<Status> status = new OnceSettable<>();
 	private OnceSettable<ContentType> contentType = new OnceSettable<>();
 	private OnceSettable<Charset> encoding = new OnceSettable<>();
+	private OnceSettable<Long> contentLength = new OnceSettable<>();
 	private final ResponseRequestFields fields = new ResponseRequestFields();
 
 	///////////////////////////////////////////////////////
@@ -41,7 +42,7 @@ public class ResponseHeader {
 	}
 
 	public ResponseHeader SetContentLength (final long length) {
-		fields.SetValue("Content-length", Long.toString(length));
+		contentLength.SetQuiet(length);
 		return this;
 	}
 
@@ -52,7 +53,7 @@ public class ResponseHeader {
 
 	public Writer WriteTo (final Writer w) throws IOException {
 		// Set content type as a field
-		if (contentType != null) {
+		if (contentType.IsSet()) {
 			final List<String> values = new ArrayList<>(2);
 			values.add(contentType.GetIfSet().GetHeaderString());
 
@@ -61,6 +62,9 @@ public class ResponseHeader {
 
 			fields.SetValue("Content-type", values);
 		}
+		
+		if (contentLength.IsSet())
+			fields.SetValue("Content-length", contentLength.GetIfSet().toString());
 		
 		w
 				.append("HTTP/1.1 ")
