@@ -43,7 +43,7 @@ public class Strings {
 
 	///////////////////////////////////////////////////////
 	//
-	public static <T> String Join (final Iterable<? extends T> iterable, final String joint) {
+	public static <T> String Join (final Iterable<? extends T> iterable, final String joint, final Stringifier stringifier) {
 		final Iterator<? extends T> ite = iterable.iterator();
 
 		if (!ite.hasNext())
@@ -52,16 +52,39 @@ public class Strings {
 		{
 			final StringBuilder bob = new StringBuilder(1 << 14);
 
-			bob.append(ite.next().toString());
+			bob.append(stringifier.ToString(ite.next()));
 
 			while (ite.hasNext())
-				bob.append(joint).append(ite.next().toString());
+				bob.append(joint).append(stringifier.ToString(ite.next()));
 
 			return bob.toString();
 		}
 	}
 
+	public static <T> String Join (final Iterable<? extends T> iterable, final String joint) {
+		return Join(iterable, joint, new Stringifier());
+	}
+	
+	public static <T> String Join (final T[] array, final String joint, final Stringifier stringifier) {
+		return Join(java.util.Arrays.asList(array), joint, stringifier);
+	}
+	
 	public static <T> String Join (final T[] array, final String joint) {
-		return Join(java.util.Arrays.asList(array), joint);
+		return Join(array, joint, new Stringifier());
+	}
+	
+	///////////////////////////////////////////////////////
+	//
+	public static String Replicate (final String what, final int times) {
+		final StringBuilder bob = new StringBuilder(what.length() * times);
+		for (int i = 0; i < times; ++i)
+			bob.append(what);
+		return bob.toString();
+	}
+	
+	///////////////////////////////////////////////////////
+	//
+	public static String ToString (final Object o) {
+		return new Stringifier().ToString(o);
 	}
 }

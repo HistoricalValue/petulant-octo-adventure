@@ -1,7 +1,6 @@
 package isi.util;
 
 import isi.util.streams.StreamTokeniserTokenType;
-import java.io.IOError;
 import java.io.IOException;
 import java.io.StreamTokenizer;
 import java.io.StringReader;

@@ -3,6 +3,7 @@ package isi.util.logging;
 import isi.util.Strings;
 import isi.util.Throwables;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.Writer;
 import java.text.DateFormat;
@@ -14,6 +15,8 @@ import java.util.Locale;
 import java.util.logging.LogRecord;
 import java.util.logging.LoggingPermission;
 import java.util.regex.Pattern;
+
+import static isi.util.html.Helpers.h;
 
 /**
  *
@@ -55,6 +58,26 @@ public class Handler extends java.util.logging.Handler {
 	@Override
 	public void publish (final LogRecord r) {
 		records.add(r);
+		final PrintStream stdout = isi.util.Runtime.GetCurrentStdout();
+//		r.getLevel();
+//		r.getLoggerName();
+//		r.getMessage();
+//		r.getMillis();
+//		r.getParameters();
+//		r.getSequenceNumber();
+//		r.getSourceClassName();
+//		r.getSourceMethodName();
+//		r.getThreadID();
+//		r.getThrown();
+		stdout.printf("[%s]:%s:%s",
+				geekDateFormat.format(new Date(r.getMillis())),
+				r.getLoggerName(),
+				r.getMessage());
+		
+		final Object[] args = r.getParameters();
+		if (args != null && args.length > 0)
+			stdout.printf(" {%s}", Strings.ToString(args));
+		stdout.println();
 	}
 
 	///////////////////////////////////////////////////////
@@ -133,9 +156,21 @@ public class Handler extends java.util.logging.Handler {
 		w.append("<div class=\"record ")
 				.append(isi.util.html.Helpers.h(r.getLevel().toString()))
 				.append("\"><div class=\"date\">")
-				.append(isi.util.html.Helpers.h(dateFormat.format(new Date(r.getMillis()))))
+				.append(h(superFullDateFormat.format(new Date(r.getMillis()))))
 				.append("</div>\n<div class=\"logger\">")
 				.append(isi.util.html.Helpers.h(r.getLoggerName()))
+				.append("</div><div class=\"sequence_number\">")
+				.append(Long.toString(r.getSequenceNumber()))
+				.append("</div><div class=\"source_class_name\">")
+				.append(h(r.getSourceClassName()))
+				.append("</div><div class=\"source_method_name\">")
+				.append(h(r.getSourceMethodName()))
+				.append("</div><div class=\"thread_id\">")
+				.append(Integer.toString(r.getThreadID()))
+				.append("</div><div class=\"thrown\">")
+				.append(h(Throwables.toString(r.getThrown())))
+				.append("</div><div class=\"arguments\">")
+				.append(h(Strings.ToString(r.getParameters())))
 				.append("</div><div class=\"message\">")
 				.append(isi.util.html.Helpers.h(r.getMessage()))
 				.append("</div></div> <!-- record --> \n");
@@ -229,11 +264,14 @@ public class Handler extends java.util.logging.Handler {
 				new String[] {"warning", "WARNING"},
 				new String[] {"severe", "SEVERE"}
 			};
-	private static final SimpleDateFormat dateFormat = (SimpleDateFormat) DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.FULL, Locale.UK);
+	private static final SimpleDateFormat superFullDateFormat = (SimpleDateFormat) DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.FULL, Locale.UK);
+	private static final SimpleDateFormat geekDateFormat = (SimpleDateFormat) DateFormat.getDateTimeInstance();
 	static {
-		final String pattern = dateFormat.toPattern();
+		final String pattern = superFullDateFormat.toPattern();
 		final int indexOfss = pattern.indexOf("ss");
 		final String newPattern = pattern.substring(0, indexOfss) + "ss:SSSS" + pattern.substring(indexOfss + 2);
-		dateFormat.applyPattern(newPattern);
+		superFullDateFormat.applyPattern(newPattern);
+		
+		geekDateFormat.applyPattern("yyyy/MM/dd/HH:mm:ss:SSS");
 	}
 }

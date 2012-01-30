@@ -1,6 +1,7 @@
 package isi.util.html;
 
 import java.io.IOException;
+
 import static java.util.Objects.requireNonNull;
 
 public class TextElement extends Element {

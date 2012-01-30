@@ -3,6 +3,7 @@ package isi.util;
 import isi.util.logging.AutoLogger;
 import isi.util.logging.Loggers;
 import isi.util.reflect.Callers;
+import java.io.PrintStream;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Objects;
@@ -33,7 +34,9 @@ public class Runtime {
 	}
 
 	public static void cd (final String relPath) {
-		PushRuntime(new Runtime(new Cwd(GetCurrentCwd().resolve(relPath))));
+		PushRuntime(new Runtime(
+				new Cwd(GetCurrentCwd().resolve(relPath)),
+				GetCurrentStdout()));
 	}
 
 	///////////////////////////////////////////////////////
@@ -44,6 +47,10 @@ public class Runtime {
 	
 	public AutoLogger GetLoggerFor (final Class<?> klass) {
 		return Loggers.GetLogger(klass, id);
+	}
+	
+	public PrintStream GetStdout () {
+		return stdout;
 	}
 
 	///////////////////////////////////////////////////////
@@ -60,20 +67,29 @@ public class Runtime {
 		return GetCurrentLoggerFor(Callers.DetectCallerClass());
 	}
 	
+	public static PrintStream GetCurrentStdout () {
+		return GetRuntime().GetStdout();
+	}
+	
 	///////////////////////////////////////////////////////
 	// construcors
-	public Runtime (final Cwd cwd) {
+	public Runtime (final Cwd cwd, final PrintStream stdout) {
 		this.cwd = cwd;
+		this.stdout = stdout;
 	}
 
 	///////////////////////////////////////////////////////
 	// Factories
+	@SuppressWarnings("UseOfSystemOutOrSystemErr")
 	public static Runtime CreateDefault () {
-		return new Runtime(new Cwd(Objects.toString(System.getProperty("user.dir"), ".")));
+		return new Runtime(
+				new Cwd(Objects.toString(System.getProperty("user.dir"), ".")),
+				System.out);
 	}
 
 	///////////////////////////////////////////////////////
 	// state
 	private final Cwd cwd;
 	private final String id = idgen.next();
+	private final PrintStream stdout;
 }

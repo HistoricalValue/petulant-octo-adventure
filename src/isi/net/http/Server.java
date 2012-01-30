@@ -1,6 +1,5 @@
 package isi.net.http;
 
-import isi.util.Ref;
 import java.io.IOException;
 import java.io.Reader;
 import java.net.SocketAddress;

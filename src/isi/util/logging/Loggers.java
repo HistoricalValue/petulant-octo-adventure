@@ -1,6 +1,8 @@
 package isi.util.logging;
 
+import isi.util.Runtime;
 import isi.util.charstreams.Encodings;
+import isi.util.reflect.Callers;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -9,8 +11,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
-import isi.util.Runtime;
-import isi.util.reflect.Callers;
 
 public class Loggers {
 	
