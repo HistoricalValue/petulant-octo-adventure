@@ -10,7 +10,7 @@ public class OnceSettable<T> {
 	public static class GetUnsetOrSetSetException extends Exception {
 		private static final long serialVersionUID = 1L;
 	}
-	
+
 	@SuppressWarnings("PublicInnerClass")
 	public static class GetUnsetOrSetSetRuntimeException extends RuntimeException {
 		private static final long serialVersionUID = 1L;
@@ -25,7 +25,7 @@ public class OnceSettable<T> {
 		set = true;
 		this.val = val;
 	}
-	
+
 	public void SetQuiet (final T val) throws GetUnsetOrSetSetRuntimeException {
 		try {
 			Set(val);
@@ -50,7 +50,7 @@ public class OnceSettable<T> {
 	public T GetIfSet () {
 		return set? val : null;
 	}
-	
+
 	public T GetNotNull () {
 		return Objects.requireNonNull(GetIfSet());
 	}

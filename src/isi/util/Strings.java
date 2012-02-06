@@ -64,15 +64,15 @@ public class Strings {
 	public static <T> String Join (final Iterable<? extends T> iterable, final String joint) {
 		return Join(iterable, joint, new Stringifier());
 	}
-	
+
 	public static <T> String Join (final T[] array, final String joint, final Stringifier stringifier) {
 		return Join(java.util.Arrays.asList(array), joint, stringifier);
 	}
-	
+
 	public static <T> String Join (final T[] array, final String joint) {
 		return Join(array, joint, new Stringifier());
 	}
-	
+
 	///////////////////////////////////////////////////////
 	//
 	public static String Replicate (final String what, final int times) {
@@ -81,7 +81,7 @@ public class Strings {
 			bob.append(what);
 		return bob.toString();
 	}
-	
+
 	///////////////////////////////////////////////////////
 	//
 	public static String ToString (final Object o) {

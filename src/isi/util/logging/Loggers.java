@@ -13,7 +13,7 @@ import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 public class Loggers {
-	
+
 	private Loggers () {
 	}
 
@@ -25,27 +25,27 @@ public class Loggers {
 	public static AutoLogger GetLogger (final String name) {
 		return GetLogger(name, "");
 	}
-	
+
 	public static AutoLogger GetLogger (final String name, final String instance) {
 		final String loggerId = CreateLoggerId(name, instance);
-		
+
 		AutoLogger autologger = loggers.get(loggerId);
-		
+
 		if (autologger == null) {
 			autologger = new AutoLogger(Logger.getLogger(loggerId));
 			final Object previous = loggers.put(loggerId, autologger);
 			assert previous == null;
-			
+
 			autologger.GetLogger().addHandler(handler);
 		}
-		
+
 		return autologger;
 	}
 
 	public static AutoLogger GetLogger (final Class<?> klass, final String instance) {
 		return GetLogger(ClassToLoggerName(klass), instance);
 	}
-	
+
 	public static AutoLogger GetLogger (final Class<?> klass) {
 		return GetLogger(klass, "");
 	}
@@ -65,13 +65,13 @@ public class Loggers {
 	public static void CleanUp () {
 	//	handler.close();
 	}
-	
+
 	///////////////////////////////////////////////////////
 	// utils
 	private static String ClassToLoggerName (final Class<?> klass) {
 		return klass.getCanonicalName();
 	}
-	
+
 	private static String CreateLoggerId (final String name, final String instance) {
 		return name + "_" + instance;
 	}

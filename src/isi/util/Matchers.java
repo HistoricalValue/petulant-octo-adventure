@@ -4,7 +4,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Matchers {
-	
+
 	///////////////////////////////////////////////////////
 	//
 	private static final Matcher NLm = Pattern.compile("\n").matcher("");

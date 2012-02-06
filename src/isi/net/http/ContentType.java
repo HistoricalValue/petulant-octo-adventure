@@ -7,15 +7,15 @@ public enum ContentType {
 	Plaintext("text/plain", true),
 
 	_7z("application/x-7z-compressed", false),
-	
+
 	Png("image/png", false),
-	
+
 	OctetStream("application/octet-stream", false);
 
 	public String GetHeaderString () {
 		return headerString;
 	}
-	
+
 	public boolean IsText () {
 		return isText;
 	}

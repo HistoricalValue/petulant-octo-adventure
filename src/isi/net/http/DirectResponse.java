@@ -19,7 +19,7 @@ public class DirectResponse extends Response {
 	public DirectResponse (final WritableByteChannel client) {
 		super(client);
 	}
-	
+
 	///////////////////////////////////////////////////////
 	//
 	@Override
@@ -46,7 +46,7 @@ public class DirectResponse extends Response {
 		ensureHeaderNotWritten();
 		return super.SetEncoding(encoding);
 	}
-	
+
 	///////////////////////////////////////////////////////
 	//
 	@Override
@@ -61,16 +61,16 @@ public class DirectResponse extends Response {
 			headerFinalised = true;
 			WriteHeader();
 		}
-		
+
 		if (totalBytesWritten + buf.remaining() > contentLength)
 			throw new IOException("Writing more bytes than declared by Content-length");
-		
+
 		final int bytesWritten = Channels.writeWhole(buf, client);
 		totalBytesWritten += bytesWritten;
 		return bytesWritten;
 	}
-	
-	
+
+
 	///////////////////////////////////////////////////////
 	//
 	private void ensureHeaderNotWritten () throws IOException {

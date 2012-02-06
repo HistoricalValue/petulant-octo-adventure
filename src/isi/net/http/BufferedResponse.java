@@ -13,13 +13,13 @@ public class BufferedResponse extends Response {
 	// state
 	private final ByteArrayOutputStream baouts = new ByteArrayOutputStream(1 << 14);
 	private final WritableByteChannel buffer = Channels.newChannel(baouts);
-	
+
 	///////////////////////////////////////////////////////
 	// constructors
 	public BufferedResponse (final WritableByteChannel client) {
 		super(client);
 	}
-	
+
 	///////////////////////////////////////////////////////
 	// Implementing Response
 	@Override

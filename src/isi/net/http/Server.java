@@ -31,11 +31,11 @@ public class Server {
 		{
 			final Request request = new RequestParser(r).Parse();
 			final boolean isDirect = handler.ShouldHandleDirect(request);
-			
+
 			try (final Response response = isDirect? new DirectResponse(client) : new BufferedResponse(client)) {
 				handler.Handle(response, request, isDirect);
 			}
-			
+
 		}
 		catch (final IOException ioex) {
 			L().e(ioex);

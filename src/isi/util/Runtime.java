@@ -44,11 +44,11 @@ public class Runtime {
 	public Cwd GetCwd () {
 		return cwd;
 	}
-	
+
 	public AutoLogger GetLoggerFor (final Class<?> klass) {
 		return Loggers.GetLogger(klass, id);
 	}
-	
+
 	public PrintStream GetStdout () {
 		return stdout;
 	}
@@ -66,11 +66,11 @@ public class Runtime {
 	public static AutoLogger GetCurrentLogger () {
 		return GetCurrentLoggerFor(Callers.DetectCallerClass());
 	}
-	
+
 	public static PrintStream GetCurrentStdout () {
 		return GetRuntime().GetStdout();
 	}
-	
+
 	///////////////////////////////////////////////////////
 	// construcors
 	public Runtime (final Cwd cwd, final PrintStream stdout) {

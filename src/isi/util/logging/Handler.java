@@ -73,7 +73,7 @@ public class Handler extends java.util.logging.Handler {
 				geekDateFormat.format(new Date(r.getMillis())),
 				r.getLoggerName(),
 				r.getMessage());
-		
+
 		final Object[] args = r.getParameters();
 		if (args != null && args.length > 0)
 			stdout.printf(" {%s}", Strings.ToString(args));
@@ -271,7 +271,7 @@ public class Handler extends java.util.logging.Handler {
 		final int indexOfss = pattern.indexOf("ss");
 		final String newPattern = pattern.substring(0, indexOfss) + "ss:SSSS" + pattern.substring(indexOfss + 2);
 		superFullDateFormat.applyPattern(newPattern);
-		
+
 		geekDateFormat.applyPattern("yyyy/MM/dd/HH:mm:ss:SSS");
 	}
 }

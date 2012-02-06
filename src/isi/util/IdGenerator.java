@@ -1,12 +1,12 @@
 package isi.util;
 
 public class IdGenerator {
-	
+
 	///////////////////////////////////////////////////////
 	// state
 	private final String prefix, suffix;
 	private int seed = 0;
-	
+
 	///////////////////////////////////////////////////////
 	// constructors
 	public IdGenerator (final String prefix, final String suffix) {
@@ -24,5 +24,5 @@ public class IdGenerator {
 	public void reset () {
 		seed = 0;
 	}
-	
+
 }

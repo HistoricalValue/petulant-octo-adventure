@@ -8,18 +8,18 @@ import java.nio.channels.WritableByteChannel;
 import java.nio.charset.Charset;
 
 public abstract class Response implements WritableByteChannel {
-	
+
 	///////////////////////////////////////////////////////
 	// state
 	private final ResponseHeader header = new ResponseHeader();
 	private final WritableByteChannel client;
 	private boolean closed = false;
-	
+
 	///////////////////////////////////////////////////////
 	// abstract
 	protected abstract void closeImpl (final WritableByteChannel client) throws IOException;
 	protected abstract int writeImpl (final ByteBuffer buf, final WritableByteChannel client) throws IOException;
-	
+
 	///////////////////////////////////////////////////////
 	//
 	public Response SetStatus (final Status status) throws IOException {
@@ -27,13 +27,13 @@ public abstract class Response implements WritableByteChannel {
 		header.SetStatus(status);
 		return this;
 	}
-	
+
 	public Response SetContentLength (final long contentLength) throws IOException {
 		ensureOpen();
 		header.SetContentLength(contentLength);
 		return this;
 	}
-	
+
 	public Response SetContentType (final ContentType contentType) throws IOException {
 		ensureOpen();
 		header.SetContentType(contentType);
@@ -45,7 +45,7 @@ public abstract class Response implements WritableByteChannel {
 		header.SetEncoding(encoding);
 		return this;
 	}
-	
+
 	///////////////////////////////////////////////////////
 	//
 	@Override
@@ -54,18 +54,18 @@ public abstract class Response implements WritableByteChannel {
 			closeImpl(client);
 		closed = true;
 	}
-	
+
 	@Override
 	public boolean isOpen () {
 		return !closed;
 	}
-	
+
 	@Override
 	public int write (final ByteBuffer buf) throws IOException {
 		ensureOpen();
 		return writeImpl(buf, client);
 	}
-	
+
 	///////////////////////////////////////////////////////
 	// protected
 	///////////////////////////////////////////////////////
@@ -79,17 +79,17 @@ public abstract class Response implements WritableByteChannel {
 		}
 		return this;
 	}
-	
+
 	///////////////////////////////////////////////////////
 	// constructors
 	protected Response (final WritableByteChannel client) {
 		this.client = client;
 	}
-	
+
 	///////////////////////////////////////////////////////
 	// private
 	///////////////////////////////////////////////////////
-	
+
 	///////////////////////////////////////////////////////
 	//
 	private void ensureOpen () throws IOException {

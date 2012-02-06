@@ -11,17 +11,17 @@ public class IndentingAppendable implements Appendable {
 	private final Appendable appendable;
 	private int nesting;
 	private final ArrayList<String> indents = new ArrayList<>(3);
-	
+
 	private void EnsureNestingCovered () {
 		while (nesting >= indents.size())
 			indents.add(indents.get(nesting - 1) + "    ");
 	}
-	
+
 	private String UpdateIndent () {
 		EnsureNestingCovered();
 		return indents.get(nesting);
 	}
-	
+
 	///////////////////////////////////////////////////////
 	// constructors
 	public IndentingAppendable (final Appendable appendable, final int level) {
@@ -29,21 +29,21 @@ public class IndentingAppendable implements Appendable {
 		indents.add("\n");
 		nesting = level;
 	}
-	
+
 	///////////////////////////////////////////////////////
 	//
 	public IndentingAppendable NestIn () {
 		++nesting;
 		return this;
 	}
-	
+
 	public IndentingAppendable NestOut () {
 		if (nesting == 0)
 			throw new IndexOutOfBoundsException();
 		--nesting;
 		return this;
 	}
-	
+
 	///////////////////////////////////////////////////////
 	// Implementing Appendable
 	@Override
@@ -66,5 +66,5 @@ public class IndentingAppendable implements Appendable {
 			appendable.append(c);
 		return this;
 	}
-	
+
 }

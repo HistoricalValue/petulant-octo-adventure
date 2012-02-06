@@ -33,7 +33,7 @@ public class ResponseHeader {
 		this.status.SetQuiet(status);
 		return this;
 	}
-	
+
 	public ResponseHeader SetEncoding (final Charset encoding) {
 		if (!contentType.GetIfSet().IsText())
 			throw new IllegalArgumentException();
@@ -62,10 +62,10 @@ public class ResponseHeader {
 
 			fields.SetValue("Content-type", values);
 		}
-		
+
 		if (contentLength.IsSet())
 			fields.SetValue("Content-length", contentLength.GetIfSet().toString());
-		
+
 		w
 				.append("HTTP/1.1 ")
 				.append(Integer.toString(status.GetIfSet().GetCode()))

@@ -12,7 +12,7 @@ public class AutoLogger {
 	public <T> AutoLogger (final Logger logger) {
 		this.logger = logger;
 	}
-	
+
 	public Logger GetLogger () {
 		return logger;
 	}

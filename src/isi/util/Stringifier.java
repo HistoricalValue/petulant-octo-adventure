@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.Set;
 
 public class Stringifier {
-	
+
 	///////////////////////////////////////////////////////
 	// static utils
 	private static final int DefaultBobCapacity = 1 << 10;
@@ -15,11 +15,11 @@ public class Stringifier {
 	public String ToString (final Object[] arr) {
 		return new StringBuilder(DefaultBobCapacity).append("[").append(Strings.Join(arr, ", ", this)).append("]").toString();
 	}
-	
+
 	public String ToString (final Map<?, ?> map) {
 		return new StringBuilder(DefaultBobCapacity).append("{m").append(ToString(map.entrySet())).append("}").toString();
 	}
-	
+
 	public String ToString (final Map.Entry<?, ?> entry) {
 		return new StringBuilder(DefaultBobCapacity).append("{e").append(ToString(entry.getKey())).append(" => ").append(ToString(entry.getValue())).append("}").toString();
 	}
@@ -27,20 +27,20 @@ public class Stringifier {
 	public String ToString (final Set<?> set) {
 		return new StringBuilder(DefaultBobCapacity).append("{s").append(Strings.Join(set, ", ", this)).append("}").toString();
 	}
-	
+
 	public String ToString (final List<?> list) {
 		return new StringBuilder(DefaultBobCapacity).append("[l").append(Strings.Join(list, ", ", this)).append("]").toString();
 	}
-	
+
 	public String ToString (final String string) {
 		return string;
 	}
-	
+
 	private String ToString (final Class<?> klass) {
 		final StringBuilder bob = new StringBuilder(DefaultBobCapacity);
 		final Class<?> parent = klass.getSuperclass();
 		final Class<?>[] interfaces = klass.getInterfaces();
-		
+
 		bob.append("(Class:").append(klass.getCanonicalName());
 
 		if (interfaces.length > 0)
@@ -50,13 +50,13 @@ public class Stringifier {
 
 		return bob.append(")").toString();
 	}
-	
+
 	public String ToString (final Object o) {
 		String result;
-		
+
 		if (o == null)
 			result = "null";
-		else 
+		else
 			if (o.getClass().isArray())
 				result = ToString((Object[]) o);
 			else
