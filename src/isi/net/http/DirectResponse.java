@@ -46,6 +46,18 @@ public class DirectResponse extends Response {
 		ensureHeaderNotWritten();
 		return super.SetEncoding(encoding);
 	}
+	
+	@Override
+	public Response SetContentDisposition (final String filename) throws IOException {
+		ensureHeaderNotWritten();
+		return super.SetContentDisposition(filename);
+	}
+	
+	@Override
+	public Response SetMd5 (final String md5) throws IOException {
+		ensureHeaderNotWritten();
+		return super.SetMd5(md5);
+	}
 
 	///////////////////////////////////////////////////////
 	//

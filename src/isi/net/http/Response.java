@@ -46,6 +46,18 @@ public abstract class Response implements WritableByteChannel {
 		return this;
 	}
 
+	public Response SetContentDisposition (final String filename) throws IOException {
+		ensureOpen();
+		header.SetContentDisposition(filename);
+		return this;
+	}
+	
+	public Response SetMd5 (final String md5) throws IOException {
+		ensureOpen();
+		header.SetMd5(md5);
+		return this;
+	}
+
 	///////////////////////////////////////////////////////
 	//
 	@Override

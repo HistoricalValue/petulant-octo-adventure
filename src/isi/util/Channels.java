@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Writer;
 import java.nio.ByteBuffer;
+import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
 import java.nio.charset.CharsetEncoder;
 
@@ -42,6 +43,20 @@ public class Channels {
 			}
 		};
 	}
+	
+	public static int transfuse (final ReadableByteChannel chin, final WritableByteChannel chout) throws IOException {
+		final ByteBuffer buf = ByteBuffer.allocate(1 << 17); // 256 KiB
+		
+		int totalbytesread = 0;
+		for (int bytesread = chin.read(buf); bytesread != -1; buf.clear(), bytesread = chin.read(buf)) {
+			buf.flip();
+			totalbytesread += buf.remaining();
+			writeWhole(buf, chout);
+		}
+		
+		return totalbytesread;
+	}
+	
 	///////////////////////////////////////////////////////
 	// private
 	private Channels () {

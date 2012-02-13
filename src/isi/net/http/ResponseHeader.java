@@ -16,7 +16,10 @@ public class ResponseHeader {
 	private OnceSettable<ContentType> contentType = new OnceSettable<>();
 	private OnceSettable<Charset> encoding = new OnceSettable<>();
 	private OnceSettable<Long> contentLength = new OnceSettable<>();
+	private OnceSettable<String> contentDisposition = new OnceSettable<>();
+	private OnceSettable<String> md5 = new OnceSettable<>();
 	private final ResponseRequestFields fields = new ResponseRequestFields();
+	private boolean writen = false;
 
 	///////////////////////////////////////////////////////
 	// constructors
@@ -50,8 +53,22 @@ public class ResponseHeader {
 		contentType.SetQuiet(type);
 		return this;
 	}
+	
+	public ResponseHeader SetContentDisposition (final String filename) {
+		contentDisposition.SetQuiet(filename);
+		return this;
+	}
+	
+	public ResponseHeader SetMd5 (final String md5) {
+		this.md5.SetQuiet(md5);
+		return this;
+	}
 
 	public Writer WriteTo (final Writer w) throws IOException {
+		if (writen)
+			throw new RuntimeException("Already writen");
+		writen = true;
+
 		// Set content type as a field
 		if (contentType.IsSet()) {
 			final List<String> values = new ArrayList<>(2);
@@ -60,12 +77,18 @@ public class ResponseHeader {
 			if (contentType.GetIfSet().IsText())
 				values.add("charset=" + encoding.GetIfSet().name());
 
-			fields.SetValue("Content-type", values);
+			fields.SetValue("Content-Type", values);
 		}
-
+		// Set content disposition as a field
+		if (contentDisposition.IsSet())
+			fields.SetValue("Content-Disposition", "attachment; filename=" + contentDisposition.GetNotNull());
+		// Set content length as a field
 		if (contentLength.IsSet())
-			fields.SetValue("Content-length", contentLength.GetIfSet().toString());
-
+			fields.SetValue("Content-Length", contentLength.GetNotNull().toString());
+		// Set md5 as a field
+		if (md5.IsSet())
+			fields.SetValue("Content-MD5", md5.GetNotNull());
+		
 		w
 				.append("HTTP/1.1 ")
 				.append(Integer.toString(status.GetIfSet().GetCode()))
